@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Lemowaves AI V3</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box}
+
+:root{
+--bg:#020617;
+--panel:#111827;
+--accent:#22c55e;
+--text:white;
+}
+
+body{
+margin:0;
+font-family:Inter,system-ui;
+background:var(--bg);
+color:var(--text);
+height:100vh;
+height:100dvh;
+overflow:hidden;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+body.light{
+--bg:#f5f7fb;
+--panel:white;
+--text:#0f172a;
+}
+
+#particles{position:fixed;inset:0;z-index:0}
+
+/* LANDING */
+.landing{
+position:relative;
+z-index:1;
+height:100dvh;
+width:100%;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+margin-top:20px;
+padding:20px;
+transition:.7s cubic-bezier(.22,1,.36,1)
+}
+
+.landing.hide{opacity:0;transform:scale(.92)}
+
+.logo{
+font-size:clamp(70px,10vw,120px);
+font-weight:900;
+color:var(--accent);
+animation:float 7s cubic-bezier(.45,.05,.55,.95) infinite, glow 3s ease-in-out infinite alternate
+}
+
+.tagline{opacity:.85;margin-top:14px;max-width:560px;font-size:18px}
+
+.startBtn{
+margin-top:40px;
+background:var(--accent);
+color:white;
+border:none;
+padding:14px 34px;
+border-radius:16px;
+font-size:18px;
+cursor:pointer;
+transition:.25s
+}
+
+.startBtn:hover{transform:translateY(-4px) scale(1.05)}
+
+/* APP */
+.app{
+position:relative;
+z-index:1;
+display:none;
+height:100vh;
+width:100%;
+max-width:1200px;
+opacity:0;
+transform:translateY(40px) scale(.98);
+transition:opacity .7s ease, transform .7s cubic-bezier(.22,1,.36,1);
+will-change:transform,opacity
+}
+
+.app.show{
+opacity:1;
+transform:translateY(0) scale(1)
+}
+
+.layout{display:flex;height:100%;width:100%}
+
+/* SIDEBAR */
+.sidebar{
+width:260px;
+background:var(--bg);
+border-right:1px solid #1f2937;
+padding:16px;
+display:none;
+flex-direction:column
+}
+
+.sidebar.open{display:flex}
+
+.newChat{
+background:var(--accent);
+border:none;
+padding:10px;
+border-radius:10px;
+color:white;
+cursor:pointer;
+margin-bottom:10px;
+font-size:12px
+}
+
+.shuffleBtn{
+background:#6366f1;
+border:none;
+padding:8px;
+border-radius:8px;
+color:white;
+font-size:12px;
+margin-bottom:12px;
+cursor:pointer
+}
+
+.chatHistory{
+flex:1;
+overflow:auto;
+display:flex;
+flex-direction:column;
+gap:8px
+}
+
+.chatItem{
+display:flex;
+justify-content:space-between;
+background:var(--panel);
+padding:10px;
+border-radius:8px;
+font-size:14px;
+cursor:pointer
+}
+
+.chatItem.active{outline:1px solid var(--accent)}
+
+.deleteChat{color:#ef4444;font-size:12px;margin-left:8px;cursor:pointer}
+
+/* CHAT AREA */
+.chatArea{
+flex:1;
+display:flex;
+flex-direction:column;
+height:100%;
+min-height:0;
+}
+
+header{
+margin-top:18px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:14px 18px;
+border-bottom:1px solid #1f2937
+}
+
+.leftHeader{display:flex;align-items:center;gap:12px}
+.menuBtn{font-size:22px;cursor:pointer}
+
+h1{margin:0;font-size:26px;font-weight:800;color:var(--accent)}
+
+.controls{display:flex;gap:8px}
+
+button{border:none;border-radius:8px;padding:8px 12px;font-size:12px;cursor:pointer}
+
+.theme{background:#6366f1;color:white}
+.voice{background:#0ea5e9;color:white}
+.clear{background:#ef4444;color:white}
+.send{background:var(--accent);color:white}
+
+/* CHAT WINDOW */
+#chat{
+min-height:0;
+flex:1;
+overflow-y:auto;
+padding:22px;
+display:flex;
+flex-direction:column;
+gap:16px;
+scroll-behavior:smooth;
+-webkit-overflow-scrolling:touch
+}
+
+.msg{
+max-width:70%;
+padding:14px 16px;
+border-radius:16px;
+font-size:14px;
+line-height:1.7
+}
+
+.user{background:#0ea5e9;align-self:flex-end;color:white}
+.bot{background:var(--panel);border:1px solid #1f2937}
+
+img.chatImage{max-width:240px;border-radius:12px}
+
+.typingDots{display:flex;gap:4px}
+.typingDots span{
+width:7px;
+height:7px;
+background:#aaa;
+border-radius:50%;
+animation:dot 1.2s infinite cubic-bezier(.4,0,.2,1)
+}
+.typingDots span:nth-child(2){animation-delay:.2s}
+.typingDots span:nth-child(3){animation-delay:.4s}
+
+@keyframes dot{
+0%{transform:scale(.6);opacity:.3}
+50%{transform:scale(1.4);opacity:1}
+100%{transform:scale(.6);opacity:.3}
+}
+
+/* INPUT AREA */
+#inputArea{
+display:flex;
+gap:10px;
+padding:14px;
+border-top:1px solid #1f2937;
+align-items:center;
+background:var(--bg);
+position:sticky;
+bottom:0;
+z-index:2
+}
+
+textarea{
+flex:1;
+resize:none;
+min-height:44px;
+max-height:160px;
+padding:12px;
+border-radius:12px;
+border:none;
+background:#000;
+color:white;
+font-size:14px
+}
+
+body.light textarea{background:#e5e7eb;color:black}
+
+.uploadBtn{
+background:linear-gradient(45deg,#22c55e,#0ea5e9);
+color:white;
+font-size:18px;
+padding:10px 12px;
+border-radius:12px;
+box-shadow:0 0 10px rgba(34,197,94,.6);
+transition:.2s
+}
+
+.uploadBtn:hover{transform:scale(1.1)}
+
+/* DESKTOP FONT BOOST */
+@media (min-width:900px){
+#chat{padding:30px}
+.msg{font-size:18px;max-width:60%}
+textarea{font-size:16px}
+}
+
+@keyframes float{
+0%{transform:translateY(0)}
+50%{transform:translateY(-14px)}
+100%{transform:translateY(0)}
+}
+
+@keyframes glow{
+0%{text-shadow:0 0 8px rgba(34,197,94,.3)}
+100%{text-shadow:0 0 18px rgba(34,197,94,.7)}
+}
+
+@media (max-width:600px){
+body{font-size:12px}
+.logo{font-size:clamp(48px,9vw,70px)}
+.tagline{font-size:13px}
+h1{font-size:20px}
+button{font-size:14px}
+.msg{font-size:14px}
+textarea{font-size:14px}
+}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="particles"></canvas>
+
+<div class="landing" id="landing">
+<div class="logo">Lemowaves AI</div>
+<div class="tagline">A powerful AI assistant for answers, coding and ideas.</div>
+<button class="startBtn" id="startBtn">Get Started</button>
+</div>
+
+<div class="app" id="app">
+<div class="layout">
+
+<div class="sidebar" id="sidebar">
+<button class="newChat" id="newChatBtn">+ New Chat</button>
+<button class="shuffleBtn" id="shuffleBtn">Shuffle</button>
+<div class="chatHistory" id="history"></div>
+</div>
+
+<div class="chatArea">
+<header>
+<div class="leftHeader">
+<div class="menuBtn" id="menuBtn">☰</div>
+<h1>Lemowaves AI</h1>
+</div>
+<div class="controls">
+<button id="themeBtn" class="theme">Theme</button>
+<button id="voiceBtn" class="voice">Voice Off</button>
+<button id="clearBtn" class="clear">Clear</button>
+</div>
+</header>
+
+<div id="chat"></div>
+
+<div id="inputArea">
+<button class="uploadBtn" id="uploadBtn">📎</button>
+<input type="file" id="fileUpload" accept="image/*" style="display:none">
+<textarea id="userInput" placeholder="Ask anything..."></textarea>
+<button id="sendBtn" class="send">Send</button>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+
+const landing=document.getElementById("landing")
+const app=document.getElementById("app")
+const sidebar=document.getElementById("sidebar")
+const chat=document.getElementById("chat")
+const input=document.getElementById("userInput")
+const history=document.getElementById("history")
+const fileUpload=document.getElementById("fileUpload")
+
+const startBtn=document.getElementById("startBtn")
+const menuBtn=document.getElementById("menuBtn")
+const newChatBtn=document.getElementById("newChatBtn")
+const sendBtn=document.getElementById("sendBtn")
+const themeBtn=document.getElementById("themeBtn")
+const clearBtn=document.getElementById("clearBtn")
+const uploadBtn=document.getElementById("uploadBtn")
+const voiceBtn=document.getElementById("voiceBtn")
+const shuffleBtn=document.getElementById("shuffleBtn")
+
+let voiceEnabled=false
+let imageData=null
+
+voiceBtn.onclick=()=>{
+voiceEnabled=!voiceEnabled
+voiceBtn.textContent=voiceEnabled?"Voice On":"Voice Off"
+}
+
+function speak(text){
+if(!voiceEnabled) return
+const speech=new SpeechSynthesisUtterance(text)
+speech.lang="en-US"
+speechSynthesis.speak(speech)
+}
+
+window.addEventListener('DOMContentLoaded',()=>{startBtn.onclick=startApp})
+
+function startApp(){
+landing.classList.add("hide")
+setTimeout(()=>{
+landing.style.display="none"
+app.style.display="block"
+setTimeout(()=>app.classList.add("show"),50)
+if(Object.keys(chats).length===0) createChat()
+else loadChatList()
+},500)
+}
+
+menuBtn.onclick=()=>sidebar.classList.toggle("open")
+
+uploadBtn.onclick=()=>fileUpload.click()
+
+fileUpload.addEventListener("change",()=>{
+const file=fileUpload.files[0]
+if(!file) return
+
+const reader=new FileReader()
+
+reader.onload=()=>{
+imageData=reader.result
+
+const div=document.createElement("div")
+div.className="msg user"
+
+const img=document.createElement("img")
+img.src=imageData
+img.className="chatImage"
+
+div.appendChild(img)
+chat.appendChild(div)
+chat.scrollTop=chat.scrollHeight
+}
+
+reader.readAsDataURL(file)
+})
+
+/* PARTICLES */
+const canvas=document.getElementById("particles")
+const ctx=canvas.getContext("2d")
+let particles=[]
+
+function resize(){
+canvas.width=window.innerWidth
+canvas.height=window.innerHeight
+}
+
+resize()
+window.addEventListener("resize",resize)
+
+function initParticles(){
+particles=[]
+for(let i=0;i<80;i++){
+particles.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+vx:(Math.random()-.5)*0.25,
+vy:(Math.random()-.5)*0.25
+})
+}
+}
+
+initParticles()
+
+function animate(){
+ctx.clearRect(0,0,canvas.width,canvas.height)
+ctx.fillStyle="#22c55e"
+
+particles.forEach(p=>{
+p.x+=p.vx
+p.y+=p.vy
+
+if(p.x<0||p.x>canvas.width)p.vx*=-1
+if(p.y<0||p.y>canvas.height)p.vy*=-1
+
+ctx.beginPath()
+ctx.arc(p.x,p.y,1.6,0,Math.PI*2)
+ctx.fill()
+})
+
+requestAnimationFrame(animate)
+}
+
+animate()
+
+let chats=JSON.parse(localStorage.getItem("lemowaves_chats")||"{}")
+let chatCounter=Object.keys(chats).length
+let currentChat=null
+
+function saveChats(){
+localStorage.setItem("lemowaves_chats",JSON.stringify(chats))
+}
+
+newChatBtn.onclick=createChat
+
+function createChat(){
+chatCounter++
+const id="chat"+Date.now()
+chats[id]={name:"Chat "+chatCounter,messages:[]}
+saveChats()
+createChatItem(id)
+switchChat(id)
+}
+
+function createChatItem(id){
+const item=document.createElement("div")
+item.className="chatItem"
+item.dataset.id=id
+item.innerHTML=`${chats[id].name} <span class="deleteChat">✕</span>`
+item.onclick=()=>switchChat(id)
+item.querySelector(".deleteChat").onclick=(e)=>{
+e.stopPropagation()
+deleteChat(id)
+}
+history.appendChild(item)
+}
+
+function loadChatList(){
+history.innerHTML=""
+Object.keys(chats).forEach(createChatItem)
+const first=Object.keys(chats)[0]
+if(first) switchChat(first)
+}
+
+function switchChat(id){
+currentChat=id
+chat.innerHTML=""
+Array.from(history.children).forEach(i=>i.classList.remove("active"))
+const active=[...history.children].find(i=>i.dataset.id===id)
+if(active) active.classList.add("active")
+chats[id].messages.forEach(m=>renderMessage(m.text,m.type,false))
+}
+
+function deleteChat(id){
+delete chats[id]
+saveChats()
+loadChatList()
+}
+
+shuffleBtn.onclick=()=>{
+const items=[...history.children]
+items.sort(()=>Math.random()-0.5)
+history.innerHTML=""
+items.forEach(i=>history.appendChild(i))
+}
+
+function renderMessage(text,type,save=true){
+const div=document.createElement("div")
+div.className="msg "+type
+chat.appendChild(div)
+
+if(type==="bot"){
+let words=text.split(" ")
+let i=0
+
+function type(){
+if(i<words.length){
+div.textContent+=(i?" ":"")+words[i]
+chat.scrollTop=chat.scrollHeight
+setTimeout(type,55)
+i++
+}else{
+speak(text)
+}
+}
+
+type()
+
+}else{
+div.textContent=text
+}
+
+chat.scrollTop=chat.scrollHeight
+
+if(save && currentChat){
+chats[currentChat].messages.push({text,type})
+saveChats()
+}
+}
+
+async function askAI(msg){
+
+const q = msg.toLowerCase()
+
+if(
+q.includes("who created you") ||
+q.includes("who created u") ||
+q.includes("who made you") ||
+q.includes("who is your creator") ||
+q.includes("who built you") ||
+q.includes("who owns you") ||
+q.includes("who really created you") ||
+q.includes("who developed you")
+){
+renderMessage("I was created by an individual person named Sam.","bot")
+return
+}
+
+const typing=document.createElement("div")
+typing.className="msg bot"
+typing.id="typing"
+typing.innerHTML='<div class="typingDots"><span></span><span></span><span></span></div>'
+chat.appendChild(typing)
+chat.scrollTop=chat.scrollHeight
+
+let prompt=msg
+
+if(imageData){
+prompt += " User uploaded image preview: " + imageData.slice(0,1200)
+}
+
+try{
+
+prompt = "You are Lemowaves AI. Respond naturally like a helpful human assistant. Understand emotions and reply calmly. Never mention OpenAI or external providers. User message: " + prompt
+
+const res=await fetch("https://text.pollinations.ai/"+encodeURIComponent(prompt),{cache:"no-store"})
+
+let text=await res.text()
+
+text=text.replace(/openai/gi,"Lemowaves")
+
+const t=document.getElementById("typing")
+if(t) t.remove()
+
+renderMessage(text,"bot")
+
+}catch{
+
+const t=document.getElementById("typing")
+if(t) t.remove()
+
+renderMessage("Server busy","bot")
+
+}
+
+imageData=null
+}
+
+sendBtn.onclick=send
+
+function send(){
+const msg=input.value.trim()
+if(!msg) return
+renderMessage(msg,"user")
+input.value=""
+askAI(msg)
+}
+
+input.addEventListener("keydown",e=>{
+if(e.key==="Enter" && !e.shiftKey){
+e.preventDefault()
+send()
+}
+})
+
+clearBtn.onclick=()=>{
+if(!currentChat) return
+chat.innerHTML=""
+chats[currentChat].messages=[]
+saveChats()
+}
+
+themeBtn.onclick=()=>document.body.classList.toggle("light")
+
+</script>
+
+</body>
+</html>
