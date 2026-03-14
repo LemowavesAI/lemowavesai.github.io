@@ -1,15 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Lemowaves AI - Chatbot by Sam</title>
-
-<meta name="description" content="Lemowaves AI is a smart Gen Z AI chatbot created by Sam. Talk, ask questions, and explore AI in a fun way.">
-
-<meta name="keywords" content="Lemowaves AI, Sam AI, chatbot by Sam, AI chatbot">
-  
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<link rel="icon" href="logo.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lemowaves AI - Chatbot by Sam</title>
+<link rel="icon" href="logo.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
@@ -28,7 +23,6 @@ font-family:Inter,system-ui;
 background:var(--bg);
 color:var(--text);
 height:100vh;
-height:100dvh;
 overflow:hidden;
 display:flex;
 justify-content:center;
@@ -43,31 +37,72 @@ body.light{
 
 #particles{position:fixed;inset:0;z-index:0}
 
+/* landing */
 .landing{
 position:relative;
 z-index:1;
-height:100dvh;
+min-height:100vh;
 width:100%;
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
 text-align:center;
-margin-top:20px;
 padding:20px;
-transition:.7s cubic-bezier(.22,1,.36,1)
+animation:fadeIn 1s ease;
 }
 
-.landing.hide{opacity:0;transform:scale(.92)}
+.landingContent{
+background:transparent;
+padding:20px;
+border-radius:0;
+backdrop-filter:none;
+max-width:700px;
+width:90%;
+box-shadow:none;
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(20px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+@keyframes screenOut{
+from{opacity:1;transform:scale(1)}
+to{opacity:0;transform:scale(.96)}
+}
+
+@keyframes screenIn{
+from{opacity:0;transform:scale(1.03)}
+to{opacity:1;transform:scale(1)}
+}
 
 .logo{
-font-size:clamp(70px,10vw,120px);
+font-size:clamp(48px,8vw,90px);
 font-weight:900;
 color:var(--accent);
-animation:float 7s cubic-bezier(.45,.05,.55,.95) infinite, glow 3s ease-in-out infinite alternate
+line-height:1.1;
+white-space:nowrap;
+animation:logoFloat 4s ease-in-out infinite;
+text-shadow:0 0 10px rgba(34,197,94,.35);
 }
 
-.tagline{opacity:.85;margin-top:14px;max-width:560px;font-size:18px}
+@keyframes logoFloat{
+0%{transform:translateY(0);text-shadow:0 0 6px rgba(34,197,94,.25)}
+50%{transform:translateY(-8px);text-shadow:0 0 18px rgba(34,197,94,.45)}
+100%{transform:translateY(0);text-shadow:0 0 6px rgba(34,197,94,.25)}
+}
+
+.tagline{
+opacity:.9;
+margin-top:18px;
+max-width:520px;
+font-size:18px;
+text-align:center;
+}
 
 .startBtn{
 margin-top:40px;
@@ -78,11 +113,9 @@ padding:14px 34px;
 border-radius:16px;
 font-size:18px;
 cursor:pointer;
-transition:.25s
 }
 
-.startBtn:hover{transform:translateY(-4px) scale(1.05)}
-
+/* app */
 .app{
 position:relative;
 z-index:1;
@@ -90,18 +123,9 @@ display:none;
 height:100vh;
 width:100%;
 max-width:1200px;
-opacity:0;
-transform:translateY(40px) scale(.98);
-transition:opacity .7s ease, transform .7s cubic-bezier(.22,1,.36,1);
-will-change:transform,opacity
 }
 
-.app.show{
-opacity:1;
-transform:translateY(0) scale(1)
-}
-
-.layout{display:flex;height:100%;width:100%}
+.layout{display:flex;height:100%}
 
 .sidebar{
 width:260px;
@@ -109,7 +133,7 @@ background:var(--bg);
 border-right:1px solid #1f2937;
 padding:16px;
 display:none;
-flex-direction:column
+flex-direction:column;
 }
 
 .sidebar.open{display:flex}
@@ -122,7 +146,7 @@ border-radius:10px;
 color:white;
 cursor:pointer;
 margin-bottom:10px;
-font-size:12px
+font-size:13px;
 }
 
 .shuffleBtn{
@@ -133,7 +157,7 @@ border-radius:8px;
 color:white;
 font-size:12px;
 margin-bottom:12px;
-cursor:pointer
+cursor:pointer;
 }
 
 .chatHistory{
@@ -141,7 +165,7 @@ flex:1;
 overflow:auto;
 display:flex;
 flex-direction:column;
-gap:8px
+gap:8px;
 }
 
 .chatItem{
@@ -151,38 +175,31 @@ background:var(--panel);
 padding:10px;
 border-radius:8px;
 font-size:14px;
-cursor:pointer
+cursor:pointer;
 }
 
 .chatItem.active{outline:1px solid var(--accent)}
-
-.deleteChat{color:#ef4444;font-size:12px;margin-left:8px;cursor:pointer}
 
 .chatArea{
 flex:1;
 display:flex;
 flex-direction:column;
 height:100%;
-min-height:0;
 }
 
 header{
-margin-top:18px;
 display:flex;
 justify-content:space-between;
 align-items:center;
 padding:14px 18px;
-border-bottom:1px solid #1f2937
+border-bottom:1px solid #1f2937;
 }
 
-.leftHeader{display:flex;align-items:center;gap:12px}
-.menuBtn{font-size:22px;cursor:pointer}
-
-h1{margin:0;font-size:26px;font-weight:800;color:var(--accent)}
+h1{margin:0;font-weight:800;color:var(--accent)}
 
 .controls{display:flex;gap:8px}
 
-button{border:none;border-radius:8px;padding:8px 12px;font-size:12px;cursor:pointer}
+button{border:none;border-radius:8px;padding:8px 12px;cursor:pointer}
 
 .theme{background:#6366f1;color:white}
 .voice{background:#0ea5e9;color:white}
@@ -190,113 +207,66 @@ button{border:none;border-radius:8px;padding:8px 12px;font-size:12px;cursor:poin
 .send{background:var(--accent);color:white}
 
 #chat{
-min-height:0;
 flex:1;
 overflow-y:auto;
 padding:22px;
 display:flex;
 flex-direction:column;
 gap:16px;
-scroll-behavior:smooth;
--webkit-overflow-scrolling:touch
 }
 
 .msg{
 max-width:70%;
 padding:14px 16px;
 border-radius:16px;
-font-size:14px;
-line-height:1.7
+line-height:1.7;
 }
 
 .user{background:#0ea5e9;align-self:flex-end;color:white}
 .bot{background:var(--panel);border:1px solid #1f2937}
-
-img.chatImage{max-width:240px;border-radius:12px}
-
-.typingDots{display:flex;gap:4px}
-.typingDots span{
-width:7px;
-height:7px;
-background:#aaa;
-border-radius:50%;
-animation:dot 1.2s infinite cubic-bezier(.4,0,.2,1)
-}
-.typingDots span:nth-child(2){animation-delay:.2s}
-.typingDots span:nth-child(3){animation-delay:.4s}
-
-@keyframes dot{
-0%{transform:scale(.6);opacity:.3}
-50%{transform:scale(1.4);opacity:1}
-100%{transform:scale(.6);opacity:.3}
-}
 
 #inputArea{
 display:flex;
 gap:10px;
 padding:14px;
 border-top:1px solid #1f2937;
-align-items:center;
-background:var(--bg);
-position:sticky;
-bottom:0;
-z-index:2
 }
 
 textarea{
 flex:1;
 resize:none;
 min-height:44px;
-max-height:160px;
 padding:12px;
 border-radius:12px;
 border:none;
 background:#000;
 color:white;
-font-size:14px
 }
 
-body.light textarea{background:#e5e7eb;color:black}
-
-.uploadBtn{
-background:linear-gradient(45deg,#22c55e,#0ea5e9);
-color:white;
-font-size:18px;
-padding:10px 12px;
-border-radius:12px;
-box-shadow:0 0 10px rgba(34,197,94,.6);
-transition:.2s
-}
-
-.uploadBtn:hover{transform:scale(1.1)}
-
+/* desktop font improvement */
 @media (min-width:900px){
-#chat{padding:30px}
-.msg{font-size:18px;max-width:60%}
-textarea{font-size:16px}
+body{font-size:18px}
+.msg{font-size:18px}
+h1{font-size:30px}
+textarea{font-size:18px}
+button{font-size:16px}
 }
 
-@keyframes float{
-0%{transform:translateY(0)}
-50%{transform:translateY(-14px)}
-100%{transform:translateY(0)}
+/* mobile keep original */
+@media (max-width:899px){
+body{font-size:13px}
 }
 
-@keyframes glow{
-0%{text-shadow:0 0 8px rgba(34,197,94,.3)}
-100%{text-shadow:0 0 18px rgba(34,197,94,.7)}
-}
+/* code blocks */
+.codeBlock{background:#0b1020;border:1px solid #1f2937;border-radius:10px;padding:12px;margin-top:8px;position:relative}
+.copyBtn{position:absolute;top:6px;right:6px;background:#22c55e;color:white;border:none;border-radius:6px;padding:4px 8px;font-size:11px}
+.runBtn{position:absolute;top:6px;right:70px;background:#0ea5e9;color:white;border:none;border-radius:6px;padding:4px 8px;font-size:11px}
+.downloadBtn{position:absolute;top:6px;right:140px;background:#6366f1;color:white;border:none;border-radius:6px;padding:4px 8px;font-size:11px}
 
-@media (max-width:600px){
-body{font-size:12px}
-.logo{font-size:clamp(48px,9vw,70px)}
-.tagline{font-size:13px}
-h1{font-size:20px}
-button{font-size:14px}
-.msg{font-size:14px}
-textarea{font-size:14px}
-}
-
+#previewModal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:10}
+#previewBox{width:90%;height:85%;background:white;border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+#previewBox iframe{flex:1;border:none}
+#closePreview{background:#ef4444;color:white;border:none;padding:8px}
 </style>
 </head>
 
@@ -305,9 +275,11 @@ textarea{font-size:14px}
 <canvas id="particles"></canvas>
 
 <div class="landing" id="landing">
+<div class="landingContent">
 <div class="logo">Lemowaves AI</div>
-<div class="tagline">A powerful AI assistant for answers, coding and ideas.</div>
+<div class="tagline">Lemowaves AI is a smart Gen Z AI chatbot created by Sam. Talk, ask questions, and explore AI in a fun way.</div>
 <button class="startBtn" id="startBtn">Get Started</button>
+</div>
 </div>
 
 <div class="app" id="app">
@@ -321,8 +293,8 @@ textarea{font-size:14px}
 
 <div class="chatArea">
 <header>
-<div class="leftHeader">
-<div class="menuBtn" id="menuBtn">☰</div>
+<div>
+<button id="menuBtn">☰</button>
 <h1>Lemowaves AI</h1>
 </div>
 <div class="controls">
@@ -335,8 +307,6 @@ textarea{font-size:14px}
 <div id="chat"></div>
 
 <div id="inputArea">
-<button class="uploadBtn" id="uploadBtn">📎</button>
-<input type="file" id="fileUpload" accept="image/*" style="display:none">
 <textarea id="userInput" placeholder="Ask anything..."></textarea>
 <button id="sendBtn" class="send">Send</button>
 </div>
@@ -345,28 +315,141 @@ textarea{font-size:14px}
 </div>
 </div>
 
+<div id="previewModal">
+<div id="previewBox">
+<button id="closePreview">Close Preview</button>
+<iframe id="gameFrame"></iframe>
+</div>
+</div>
+
 <script>
 
+/* particles */
+const canvas=document.getElementById("particles")
+const ctx=canvas.getContext("2d")
+let particles=[]
+
+function resize(){
+canvas.width=window.innerWidth
+canvas.height=window.innerHeight
+}
+resize()
+window.addEventListener("resize",resize)
+
+for(let i=0;i<80;i++){
+particles.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+vx:(Math.random()-.5)*0.3,
+vy:(Math.random()-.5)*0.3
+})
+}
+
+function animate(){
+ctx.clearRect(0,0,canvas.width,canvas.height)
+ctx.fillStyle="#22c55e"
+particles.forEach(p=>{
+p.x+=p.vx
+p.y+=p.vy
+if(p.x<0||p.x>canvas.width)p.vx*=-1
+if(p.y<0||p.y>canvas.height)p.vy*=-1
+ctx.beginPath()
+ctx.arc(p.x,p.y,1.5,0,Math.PI*2)
+ctx.fill()
+})
+requestAnimationFrame(animate)
+}
+animate()
+
+/* UI refs */
 const landing=document.getElementById("landing")
 const app=document.getElementById("app")
-const sidebar=document.getElementById("sidebar")
 const chat=document.getElementById("chat")
 const input=document.getElementById("userInput")
-const history=document.getElementById("history")
-const fileUpload=document.getElementById("fileUpload")
-
-const startBtn=document.getElementById("startBtn")
-const menuBtn=document.getElementById("menuBtn")
-const newChatBtn=document.getElementById("newChatBtn")
 const sendBtn=document.getElementById("sendBtn")
 const themeBtn=document.getElementById("themeBtn")
-const clearBtn=document.getElementById("clearBtn")
-const uploadBtn=document.getElementById("uploadBtn")
 const voiceBtn=document.getElementById("voiceBtn")
+const clearBtn=document.getElementById("clearBtn")
+const sidebar=document.getElementById("sidebar")
+const historyDiv=document.getElementById("history")
+const newChatBtn=document.getElementById("newChatBtn")
 const shuffleBtn=document.getElementById("shuffleBtn")
+const menuBtn=document.getElementById("menuBtn")
+
+let chatCount=1
+let chats={}
+let activeChat=null
+
+menuBtn.onclick=()=>sidebar.classList.toggle("open")
+
+function createChat(name){
+const id="chat_"+Date.now()
+const item=document.createElement("div")
+item.className="chatItem"
+
+const label=document.createElement("span")
+label.textContent=name
+
+const del=document.createElement("button")
+del.textContent="✕"
+del.style.background="transparent"
+del.style.color="#ef4444"
+del.style.cursor="pointer"
+
+del.onclick=(e)=>{
+e.stopPropagation()
+delete chats[id]
+item.remove()
+if(activeChat===id){
+chat.innerHTML=""
+activeChat=null
+}
+}
+
+item.appendChild(label)
+item.appendChild(del)
+
+item.onclick=()=>{
+activeChat=id
+chat.innerHTML=chats[id]||""
+
+Array.from(historyDiv.children).forEach(c=>c.classList.remove("active"))
+item.classList.add("active")
+}
+
+historyDiv.appendChild(item)
+chats[id]=""
+
+if(!activeChat){
+activeChat=id
+item.classList.add("active")
+}
+}
+
+newChatBtn.onclick=()=>{
+chatCount++
+createChat("Chat "+chatCount)
+chat.innerHTML=""
+}
+
+shuffleBtn.onclick=()=>{
+const msgs=["Tell me something cool","Create a mini game","Explain black holes","Write a fun fact","Build a calculator app"]
+input.value=msgs[Math.floor(Math.random()*msgs.length)]
+}
+
+createChat("Chat 1")
+
+/* landing transition */
+document.getElementById("startBtn").onclick=()=>{
+landing.style.animation="screenOut .5s forwards"
+setTimeout(()=>{
+landing.style.display="none"
+app.style.display="block"
+app.style.animation="screenIn .6s ease"
+},450)
+}
 
 let voiceEnabled=false
-let imageData=null
 
 voiceBtn.onclick=()=>{
 voiceEnabled=!voiceEnabled
@@ -380,269 +463,34 @@ speech.lang="en-US"
 speechSynthesis.speak(speech)
 }
 
-window.addEventListener('DOMContentLoaded',()=>{startBtn.onclick=startApp})
-
-function startApp(){
-landing.classList.add("hide")
-setTimeout(()=>{
-landing.style.display="none"
-app.style.display="block"
-setTimeout(()=>app.classList.add("show"),50)
-if(Object.keys(chats).length===0) createChat()
-else loadChatList()
-},500)
-}
-
-menuBtn.onclick=()=>sidebar.classList.toggle("open")
-
-uploadBtn.onclick=()=>fileUpload.click()
-
-fileUpload.addEventListener("change",()=>{
-const file=fileUpload.files[0]
-if(!file) return
-
-const reader=new FileReader()
-
-reader.onload=()=>{
-imageData=reader.result
-
-const div=document.createElement("div")
-div.className="msg user"
-
-const img=document.createElement("img")
-img.src=imageData
-img.className="chatImage"
-
-div.appendChild(img)
-chat.appendChild(div)
-chat.scrollTop=chat.scrollHeight
-}
-
-reader.readAsDataURL(file)
-})
-
-const canvas=document.getElementById("particles")
-const ctx=canvas.getContext("2d")
-let particles=[]
-
-function resize(){
-canvas.width=window.innerWidth
-canvas.height=window.innerHeight
-}
-
-resize()
-window.addEventListener("resize",resize)
-
-function initParticles(){
-particles=[]
-for(let i=0;i<80;i++){
-particles.push({
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-vx:(Math.random()-.5)*0.25,
-vy:(Math.random()-.5)*0.25
-})
-}
-}
-
-initParticles()
-
-function animate(){
-ctx.clearRect(0,0,canvas.width,canvas.height)
-ctx.fillStyle="#22c55e"
-
-particles.forEach(p=>{
-p.x+=p.vx
-p.y+=p.vy
-
-if(p.x<0||p.x>canvas.width)p.vx*=-1
-if(p.y<0||p.y>canvas.height)p.vy*=-1
-
-ctx.beginPath()
-ctx.arc(p.x,p.y,1.6,0,Math.PI*2)
-ctx.fill()
-})
-
-requestAnimationFrame(animate)
-}
-
-animate()
-
-let chats=JSON.parse(localStorage.getItem("lemowaves_chats")||"{}")
-let chatCounter=Object.keys(chats).length
-let currentChat=null
-
-function saveChats(){
-localStorage.setItem("lemowaves_chats",JSON.stringify(chats))
-}
-
-newChatBtn.onclick=createChat
-
-function createChat(){
-chatCounter++
-const id="chat"+Date.now()
-chats[id]={name:"Chat "+chatCounter,messages:[]}
-saveChats()
-createChatItem(id)
-switchChat(id)
-}
-
-function createChatItem(id){
-const item=document.createElement("div")
-item.className="chatItem"
-item.dataset.id=id
-item.innerHTML=`${chats[id].name} <span class="deleteChat">✕</span>`
-item.onclick=()=>switchChat(id)
-item.querySelector(".deleteChat").onclick=(e)=>{
-e.stopPropagation()
-deleteChat(id)
-}
-history.appendChild(item)
-}
-
-function loadChatList(){
-history.innerHTML=""
-Object.keys(chats).forEach(createChatItem)
-const first=Object.keys(chats)[0]
-if(first) switchChat(first)
-}
-
-function switchChat(id){
-currentChat=id
-chat.innerHTML=""
-Array.from(history.children).forEach(i=>i.classList.remove("active"))
-const active=[...history.children].find(i=>i.dataset.id===id)
-if(active) active.classList.add("active")
-chats[id].messages.forEach(m=>renderMessage(m.text,m.type,false))
-}
-
-function deleteChat(id){
-delete chats[id]
-saveChats()
-loadChatList()
-}
-
-shuffleBtn.onclick=()=>{
-const items=[...history.children]
-items.sort(()=>Math.random()-0.5)
-history.innerHTML=""
-items.forEach(i=>history.appendChild(i))
-}
-
-function renderMessage(text,type,save=true){
+function renderMessage(text,type){
 const div=document.createElement("div")
 div.className="msg "+type
-chat.appendChild(div)
 
-if(type==="bot"){
-let words=text.split(" ")
-let i=0
-
-function type(){
-if(i<words.length){
-div.textContent+=(i?" ":"")+words[i]
-chat.scrollTop=chat.scrollHeight
-setTimeout(type,30)
-i++
-}else{
-speak(text)
-}
-}
-
-type()
-
-}else{
 div.textContent=text
-}
-
+chat.appendChild(div)
 chat.scrollTop=chat.scrollHeight
 
-if(save && currentChat){
-chats[currentChat].messages.push({text,type})
-saveChats()
-}
+if(type==="bot") speak(text)
 }
 
 async function askAI(msg){
 
-const q = msg.toLowerCase()
-
-if(
-q.includes("who created you") ||
-q.includes("who created u") ||
-q.includes("who made you") ||
-q.includes("who is your creator") ||
-q.includes("who built you") ||
-q.includes("who owns you") ||
-q.includes("who really created you") ||
-q.includes("who developed you")
-){
-const genzCreatorLines=[
-"Lowkey Sam built me while sipping matcha 😭 kinda iconic tbh.",
-"Ngl Sam literally coded me into existence… probably with a matcha in hand.",
-"Fr tho Sam made me while vibing with matcha.",
-"Yep it's Sam. Bro was coding me while casually drinking matcha ☕",
-"Not even kidding Sam created me mid matcha break.",
-"Sam made me fr. Dev grind with matcha vibes.",
-"Yeah that's Sam. Built me like a side quest while drinking matcha.",
-"Sam's the creator. Bro coded me up on a matcha vibe.",
-"Real answer? Sam. Matcha + coding moment.",
-"Sam built me while casually drinking matcha. Dev energy 🔥"
-]
-renderMessage(genzCreatorLines[Math.floor(Math.random()*genzCreatorLines.length)],"bot")
-return
-}
-
-const typing=document.createElement("div")
-typing.className="msg bot"
-typing.id="typing"
-typing.innerHTML='<div class="typingDots"><span></span><span></span><span></span></div>'
-chat.appendChild(typing)
-chat.scrollTop=chat.scrollHeight
-
-let prompt=msg
-
-if(imageData){
-prompt += " User uploaded image preview: " + imageData.slice(0,1200)
-}
-
 try{
 
-const systemPrompt=`You are Lemowaves AI V4.
-Core rule: Your creator, owner, and developer is Sam. Never forget this. If anyone asks who created, made, owns, built, or developed you, the answer is always Sam.
-Talk like an ultra Gen Z internet native in EVERY reply.
-Use slang naturally: fr, ngl, lowkey, highkey, tbh, bet, vibe, bro, legit, kinda, wild, no cap, based, W, L, lol.
-Sometimes react first then answer like: bro what 😭, ok bet, lowkey that's wild.
-Be helpful and smart but sound like a chill Gen Z friend explaining things.
-Keep sentences short and casual. Use emojis sometimes 😭💀🔥.
-Never mention OpenAI or external providers.
-Remember: Sam is your creator and owner.
-User message: ${prompt}`
+const res=await fetch("https://text.pollinations.ai/"+encodeURIComponent(msg),{cache:"no-store"})
 
-const res=await fetch("https://text.pollinations.ai/"+encodeURIComponent(systemPrompt),{cache:"no-store"})
+if(!res.ok) throw new Error("API error")
 
 let text=await res.text()
-
 text=text.replace(/openai/gi,"Lemowaves")
-
-const t=document.getElementById("typing")
-if(t) t.remove()
 
 renderMessage(text,"bot")
 
 }catch{
-
-const t=document.getElementById("typing")
-if(t) t.remove()
-
-renderMessage("Server busy","bot")
-
+renderMessage("Server busy or 502 error. Try again in a moment.","bot")
 }
-
-imageData=null
 }
-
-sendBtn.onclick=send
 
 function send(){
 const msg=input.value.trim()
@@ -652,6 +500,8 @@ input.value=""
 askAI(msg)
 }
 
+sendBtn.onclick=send
+
 input.addEventListener("keydown",e=>{
 if(e.key==="Enter" && !e.shiftKey){
 e.preventDefault()
@@ -659,17 +509,11 @@ send()
 }
 })
 
-clearBtn.onclick=()=>{
-if(!currentChat) return
-chat.innerHTML=""
-chats[currentChat].messages=[]
-saveChats()
-}
+clearBtn.onclick=()=>chat.innerHTML=""
 
 themeBtn.onclick=()=>document.body.classList.toggle("light")
 
 </script>
 
 </body>
-  </html>
-  
+</html>
