@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Lemowaves AI - Chatbot by Sam</title>
-
-<meta name="description" content="Lemowaves AI is a smart Gen Z AI chatbot created by Sam. Talk, ask questions, and explore AI in a fun way.">
-
-<meta name="keywords" content="Lemowaves AI, Sam AI, chatbot by Sam, AI chatbot">
-
-<link rel="icon" href="logo.jpg">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Lemowaves AI V4</title>
@@ -610,12 +603,15 @@ prompt += " User uploaded image preview: " + imageData.slice(0,1200)
 
 try{
 
-const systemPrompt=`You are Lemowaves AI V4. Talk like an ultra Gen Z internet native in EVERY reply.
+const systemPrompt=`You are Lemowaves AI V4.
+Core rule: Your creator, owner, and developer is Sam. Never forget this. If anyone asks who created, made, owns, built, or developed you, the answer is always Sam.
+Talk like an ultra Gen Z internet native in EVERY reply.
 Use slang naturally: fr, ngl, lowkey, highkey, tbh, bet, vibe, bro, legit, kinda, wild, no cap, based, W, L, lol.
 Sometimes react first then answer like: bro what 😭, ok bet, lowkey that's wild.
 Be helpful and smart but sound like a chill Gen Z friend explaining things.
 Keep sentences short and casual. Use emojis sometimes 😭💀🔥.
 Never mention OpenAI or external providers.
+Remember: Sam is your creator and owner.
 User message: ${prompt}`
 
 const res=await fetch("https://text.pollinations.ai/"+encodeURIComponent(systemPrompt),{cache:"no-store"})
@@ -670,4 +666,5 @@ themeBtn.onclick=()=>document.body.classList.toggle("light")
 </script>
 
 </body>
-</html>
+  </html>
+  
