@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lemowaves AI V4</title>
+<title>Lemowaves AI</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
 <style>
@@ -27,6 +27,7 @@ overflow:hidden;
 #particles{position:fixed;inset:0;z-index:0}
 
 /* LANDING */
+
 .landing{
 position:absolute;
 inset:0;
@@ -35,21 +36,44 @@ flex-direction:column;
 justify-content:center;
 align-items:center;
 text-align:center;
-padding:20px;
 z-index:2;
-animation:fadeIn .8s ease;
+padding:20px;
+animation:fadeIn 1s ease;
 }
 
 .logo{
-font-size:clamp(40px,7vw,80px);
+font-size:clamp(48px,8vw,90px);
 font-weight:800;
 color:var(--accent);
 animation:logoFloat 4s ease-in-out infinite;
 }
 
+.tagline{
+margin-top:12px;
+font-size:20px;
+opacity:.85;
+}
+
+.startBtn{
+margin-top:30px;
+background:var(--accent);
+border:none;
+padding:15px 40px;
+color:white;
+border-radius:16px;
+font-size:20px;
+cursor:pointer;
+transition:transform .2s,box-shadow .2s;
+}
+
+.startBtn:hover{
+transform:scale(1.05);
+box-shadow:0 0 20px #22c55e;
+}
+
 @keyframes logoFloat{
 0%{transform:translateY(0);text-shadow:0 0 0 #22c55e}
-50%{transform:translateY(-10px);text-shadow:0 0 14px #22c55e}
+50%{transform:translateY(-12px);text-shadow:0 0 22px #22c55e}
 100%{transform:translateY(0);text-shadow:0 0 0 #22c55e}
 }
 
@@ -60,65 +84,45 @@ to{opacity:1;transform:scale(1)}
 
 @keyframes screenOut{
 from{opacity:1;transform:scale(1)}
-to{opacity:0;transform:scale(.94)}
-}
-
-.tagline{margin-top:14px;opacity:.9;max-width:500px}
-
-.startBtn{
-margin-top:30px;
-background:var(--accent);
-border:none;
-padding:14px 30px;
-color:white;
-border-radius:14px;
-font-size:18px;
-cursor:pointer;
+to{opacity:0;transform:scale(.9)}
 }
 
 /* APP */
+
 .app{
 display:none;
 position:absolute;
 inset:0;
 z-index:1;
+animation:fadeIn .6s ease;
 }
 
 .layout{display:flex;height:100%}
 
-/* SIDEBAR */
 .sidebar{
-width:240px;
+width:230px;
 background:#020617;
 border-right:1px solid #1f2937;
-padding:15px;
+padding:14px;
 display:none;
 flex-direction:column;
 }
 
 .sidebar.open{display:flex}
 
-.newChat{
-background:var(--accent);
+.newChat,.shuffleBtn{
 border:none;
 padding:10px;
 color:white;
 border-radius:10px;
-margin-bottom:10px;
+margin-bottom:8px;
 cursor:pointer;
 }
 
-.shuffleBtn{
-background:#6366f1;
-border:none;
-padding:10px;
-color:white;
-border-radius:10px;
-margin-bottom:10px;
-cursor:pointer;
-}
+.newChat{background:var(--accent)}
+.shuffleBtn{background:#6366f1}
 
-.chatHistory{flex:1;overflow:auto}
+.chatHistory{flex:1;overflow:auto;margin-top:8px}
 
 .chatItem{
 display:flex;
@@ -127,41 +131,30 @@ align-items:center;
 padding:10px;
 background:#111827;
 border-radius:8px;
-margin-bottom:8px;
+margin-bottom:6px;
 cursor:pointer;
 font-size:14px;
 }
 
-.chatItem span{flex:1}
+.chatItem.active{outline:2px solid #22c55e}
 
 .chatItem button{
-background:none;
-border:none;
-color:#ef4444;
-font-size:14px;
-cursor:pointer;
+background:none;border:none;color:#ef4444;cursor:pointer
 }
 
-.chatItem.active{outline:1px solid var(--accent)}
-
-/* CHAT AREA */
 .chatArea{flex:1;display:flex;flex-direction:column}
 
 header{
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:14px;
-border-bottom:1px solid #1f2937;
+padding:12px;
+border-bottom:1px solid #1f2937
 }
 
-.headerLeft{display:flex;align-items:center;gap:10px}
+.controls{display:flex;gap:6px}
 
-.controls{display:flex;align-items:center;gap:6px}
-
-h1{font-size:22px;color:var(--accent)}
-
-button{border:none;border-radius:8px;padding:8px 12px;cursor:pointer}
+button{border:none;border-radius:8px;padding:7px 10px;cursor:pointer;font-size:14px}
 
 .send{background:var(--accent);color:white}
 .clear{background:#ef4444;color:white}
@@ -171,67 +164,111 @@ button{border:none;border-radius:8px;padding:8px 12px;cursor:pointer}
 #chat{
 flex:1;
 overflow-y:auto;
-padding:20px;
+padding:16px;
 display:flex;
 flex-direction:column;
-gap:14px;
+gap:12px
 }
 
-.msg{max-width:70%;padding:12px 14px;border-radius:14px;line-height:1.6}
+.msg{
+max-width:90%;
+padding:12px 14px;
+border-radius:14px;
+line-height:1.6;
+font-size:18px;
+word-wrap:break-word;
+overflow-wrap:anywhere
+}
 
 .user{background:#0ea5e9;align-self:flex-end}
 .bot{background:#111827}
 
-#inputArea{display:flex;gap:10px;padding:12px;border-top:1px solid #1f2937}
+#inputArea{
+display:flex;
+gap:8px;
+padding:10px;
+border-top:1px solid #1f2937
+}
 
 textarea{
 flex:1;
 resize:none;
 padding:10px;
-border-radius:10px;
+border-radius:9px;
 border:none;
 background:black;
 color:white;
+font-size:18px
 }
 
-/* THINKING DOTS */
-.dot{
-display:inline-block;
-width:10px;height:10px;margin:0 3px;border-radius:50%;
-background:#22c55e;animation:pulse 1.2s infinite
+/* CODE */
+
+.codeBlock{
+background:#0b1020;
+padding:12px;
+border-radius:10px;
+position:relative;
+max-width:100%;
+overflow:hidden
 }
 
+.codeBlock pre{
+overflow:auto;
+max-height:300px;
+white-space:pre
+}
+
+/* thinking dots */
+.dot{display:inline-block;width:10px;height:10px;margin:0 3px;border-radius:50%;background:#22c55e;animation:pulse 1.2s infinite}
 .dot:nth-child(2){animation-delay:.2s}
 .dot:nth-child(3){animation-delay:.4s}
 
 @keyframes pulse{
 0%{transform:scale(.6);opacity:.4}
-50%{transform:scale(1.5);opacity:1}
+50%{transform:scale(1.6);opacity:1}
 100%{transform:scale(.6);opacity:.4}
 }
 
-/* CODE BLOCK */
-.codeBlock{background:#0b1020;padding:10px;border-radius:10px;position:relative}
-
-.codeBlock pre{overflow:auto}
-
 .copyBtn,.runBtn,.downloadBtn{
-position:absolute;top:5px;font-size:11px;padding:4px 8px;border-radius:6px;color:white
+position:absolute;
+top:6px;
+font-size:11px;
+padding:4px 7px;
+border-radius:6px;
+color:white
 }
 
-.copyBtn{right:5px;background:#22c55e}
-.runBtn{right:65px;background:#0ea5e9}
+.copyBtn{right:6px;background:#22c55e}
+.runBtn{right:60px;background:#0ea5e9}
 .downloadBtn{right:120px;background:#6366f1}
 
-/* PREVIEW */
-#previewModal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center}
+#previewModal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.7);
+display:none;
+align-items:center;
+justify-content:center
+}
 
-#previewBox{width:90%;height:85%;background:white;border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+#previewBox{
+width:90%;
+height:85%;
+background:white;
+border-radius:10px;
+overflow:hidden;
+display:flex;
+flex-direction:column
+}
 
 #previewBox iframe{flex:1;border:none}
 
 #closePreview{background:#ef4444;color:white;padding:8px;border:none}
 
+@media (max-width:700px){
+.msg{font-size:15px}
+textarea{font-size:15px}
+}
 </style>
 </head>
 
@@ -241,7 +278,7 @@ position:absolute;top:5px;font-size:11px;padding:4px 8px;border-radius:6px;color
 
 <div class="landing" id="landing">
 <div class="logo">Lemowaves AI</div>
-<div class="tagline">Gen‑Z AI chatbot created by Sam</div>
+<div class="tagline">Your powerful Gen‑Z AI assistant</div>
 <button class="startBtn" id="startBtn">Get Started</button>
 </div>
 
@@ -250,16 +287,17 @@ position:absolute;top:5px;font-size:11px;padding:4px 8px;border-radius:6px;color
 
 <div class="sidebar" id="sidebar">
 <button class="newChat" id="newChatBtn">+ New Chat</button>
-<button class="shuffleBtn" id="shuffleBtn">Shuffle Prompt</button>
+<button class="shuffleBtn" id="shuffleBtn">Shuffle</button>
 <div id="history" class="chatHistory"></div>
 </div>
 
 <div class="chatArea">
 <header>
-<div class="headerLeft">
+<div style="display:flex;align-items:center;gap:10px">
 <button id="menuBtn">☰</button>
-<h1>Lemowaves AI</h1>
+<div style="font-weight:800;color:#22c55e;font-size:20px">Lemowaves AI</div>
 </div>
+
 <div class="controls">
 <button id="themeBtn" class="theme">Theme</button>
 <button id="voiceBtn" class="voice">Voice Off</button>
@@ -280,7 +318,7 @@ position:absolute;top:5px;font-size:11px;padding:4px 8px;border-radius:6px;color
 
 <div id="previewModal">
 <div id="previewBox">
-<button id="closePreview">Close Preview</button>
+<button id="closePreview">Close</button>
 <iframe id="gameFrame"></iframe>
 </div>
 </div>
@@ -288,304 +326,370 @@ position:absolute;top:5px;font-size:11px;padding:4px 8px;border-radius:6px;color
 <script>
 
 /* PARTICLES */
-const canvas=document.getElementById("particles");
-const ctx=canvas.getContext("2d");
-let particles=[];
 
-function resize(){
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-}
-resize();
-window.addEventListener("resize",resize);
+const canvas=document.getElementById("particles")
+const ctx=canvas.getContext("2d")
+let particles=[]
+
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+resize()
+window.addEventListener("resize",resize)
 
 for(let i=0;i<70;i++){
-particles.push({
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-vx:(Math.random()-.5)*0.4,
-vy:(Math.random()-.5)*0.4
-});
+particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:(Math.random()-.5)*0.4,vy:(Math.random()-.5)*0.4})
 }
 
 function animate(){
-ctx.clearRect(0,0,canvas.width,canvas.height);
-ctx.fillStyle="#22c55e";
+ctx.clearRect(0,0,canvas.width,canvas.height)
+ctx.fillStyle="#22c55e"
 particles.forEach(p=>{
-p.x+=p.vx;
-p.y+=p.vy;
-if(p.x<0||p.x>canvas.width)p.vx*=-1;
-if(p.y<0||p.y>canvas.height)p.vy*=-1;
-ctx.beginPath();
-ctx.arc(p.x,p.y,1.5,0,Math.PI*2);
-ctx.fill();
-});
-requestAnimationFrame(animate);
+p.x+=p.vx
+p.y+=p.vy
+if(p.x<0||p.x>canvas.width)p.vx*=-1
+if(p.y<0||p.y>canvas.height)p.vy*=-1
+ctx.beginPath()
+ctx.arc(p.x,p.y,1.6,0,Math.PI*2)
+ctx.fill()
+})
+requestAnimationFrame(animate)
 }
-animate();
+animate()
 
-/* UI */
-const landing=document.getElementById("landing");
-const app=document.getElementById("app");
-const chat=document.getElementById("chat");
-const input=document.getElementById("userInput");
-const sidebar=document.getElementById("sidebar");
-const historyDiv=document.getElementById("history");
+/* ELEMENTS */
 
-let chats={};
-let chatMemory={};
-let activeChat=null;
-let chatCount=0;
+const landing=document.getElementById("landing")
+const app=document.getElementById("app")
+const chat=document.getElementById("chat")
+const input=document.getElementById("userInput")
+const sidebar=document.getElementById("sidebar")
+const historyDiv=document.getElementById("history")
 
-/* MENU */
-document.getElementById("menuBtn").onclick=()=>sidebar.classList.toggle("open");
+/* CHAT SYSTEM */
 
-/* START */
-document.getElementById("startBtn").onclick=()=>{
-landing.style.animation="screenOut .5s forwards";
-setTimeout(()=>{
-landing.style.display="none";
-app.style.display="block";
-},450);
-};
+let chats={}
+let activeChat=null
+let chatCount=0
 
-/* CREATE CHAT */
+function switchChat(id,element){
+
+if(activeChat!==null){
+chats[activeChat]=chat.innerHTML
+}
+
+activeChat=id
+chat.innerHTML=chats[id]||""
+
+Array.from(historyDiv.children).forEach(c=>c.classList.remove("active"))
+
+if(element)element.classList.add("active")
+
+}
+
 function createChat(name){
-const id="chat_"+Date.now();
-chats[id]="";
-chatMemory[id]=[];
 
-const item=document.createElement("div");
-item.className="chatItem";
+const id="chat_"+Date.now()+Math.floor(Math.random()*9999)
+chats[id]=""
 
-const label=document.createElement("span");
-label.textContent=name;
+const item=document.createElement("div")
+item.className="chatItem"
 
-const del=document.createElement("button");
-del.textContent="✕";
+const label=document.createElement("span")
+label.textContent=name
 
-item.appendChild(label);
-item.appendChild(del);
+const del=document.createElement("button")
+del.textContent="✕"
 
-item.onclick=()=>{
-activeChat=id;
-chat.innerHTML=chats[id];
-Array.from(historyDiv.children).forEach(c=>c.classList.remove("active"));
-item.classList.add("active");
-};
+item.appendChild(label)
+item.appendChild(del)
 
-/* REMOVE CHAT */
-del.onclick=(e)=>{
-e.stopPropagation();
-delete chats[id];
-delete chatMemory[id];
-item.remove();
-if(activeChat===id){chat.innerHTML="";activeChat=null}
-};
-
-historyDiv.appendChild(item);
-
-if(!activeChat){
-activeChat=id;
-item.classList.add("active");
-}
+item.onclick=(e)=>{
+if(e.target===del)return
+switchChat(id,item)
 }
 
-createChat("Chat 1");
-chatCount=1;
+ del.onclick=(e)=>{
+ e.stopPropagation()
+ delete chats[id]
+ item.remove()
+
+ if(activeChat===id){
+ chat.innerHTML=""
+ activeChat=null
+ }
+ }
+
+historyDiv.appendChild(item)
+
+switchChat(id,item)
+}
+
+createChat("Chat 1")
+chatCount=1
 
 /* NEW CHAT */
-document.getElementById("newChatBtn").onclick=()=>{
-chatCount++;
-createChat("Chat "+chatCount);
-chat.innerHTML="";
-};
 
-/* SHUFFLE PROMPTS */
-document.getElementById("shuffleBtn").onclick=()=>{
-const prompts=[
-"Create a snake game",
-"Make a calculator",
-"Build a todo list app",
-"Explain black holes simply",
-"Create pong game in HTML"
-];
-input.value=prompts[Math.floor(Math.random()*prompts.length)];
-};
-
-/* VOICE */
-let voiceEnabled=false;
-
-document.getElementById("voiceBtn").onclick=()=>{
-voiceEnabled=!voiceEnabled;
-document.getElementById("voiceBtn").textContent=voiceEnabled?"Voice On":"Voice Off";
-};
-
-function speak(text){
-if(!voiceEnabled) return;
-const speech=new SpeechSynthesisUtterance(text);
-speech.lang="en-US";
-speechSynthesis.speak(speech);
+newChatBtn.onclick=()=>{
+chatCount++
+createChat("Chat "+chatCount)
 }
 
-/* MESSAGE */
+/* SHUFFLE */
+
+shuffleBtn.onclick=()=>{
+const prompts=["Create snake game in HTML","Make calculator in HTML","Create pong game HTML","Make todo app HTML"]
+input.value=prompts[Math.floor(Math.random()*prompts.length)]
+}
+
+/* MESSAGES */
+
 function renderMessage(text,type){
-const div=document.createElement("div");
-div.className="msg "+type;
+
+const div=document.createElement("div")
+
+div.className="msg "+type
 
 if(type==="bot"){
-streamText(div,text);
+streamText(div,text)
 }else{
-div.textContent=text;
+div.textContent=text
 }
 
-chat.appendChild(div);
-chat.scrollTop=chat.scrollHeight;
+chat.appendChild(div)
 
-if(activeChat){
-chats[activeChat]=chat.innerHTML;
-chatMemory[activeChat].push({role:type,text});
-}
+chat.scrollTop=chat.scrollHeight
 
-if(type==="bot") speak(text);
+if(activeChat)chats[activeChat]=chat.innerHTML
+
 }
 
 function streamText(el,text){
-const words=text.split(" ");
-let i=0;
+
+const words=text.split(" ")
+
+let i=0
+
 const interval=setInterval(()=>{
-el.textContent+=words[i]+" ";
-i++;
-if(i>=words.length) clearInterval(interval);
-chat.scrollTop=chat.scrollHeight;
-},30);
+
+if(i<words.length){
+
+el.textContent+=words[i]+" "
+
+i++
+
+chat.scrollTop=chat.scrollHeight
+
+}
+else clearInterval(interval)
+
+},25)
+
 }
 
-/* MINI APP */
-function generateMiniApp(prompt){
-prompt=prompt.toLowerCase();
+/* CODE */
 
-if(prompt.includes("calculator")){
-return `<!DOCTYPE html><html><body style="font-family:sans-serif;text-align:center;padding:40px">
-<h2>Calculator</h2>
-<input id="a" type="number"> + <input id="b" type="number">
-<button onclick="calc()">=</button>
-<h3 id="r"></h3>
-<script>
-function calc(){
-let a=+document.getElementById('a').value;
-let b=+document.getElementById('b').value;
-document.getElementById('r').innerText=a+b;
-}
-<\/script>
-</body></html>`;
-}
-
-return null;
-}
-
-/* CODE BLOCK */
 function renderCode(code){
-const block=document.createElement("div");
-block.className="codeBlock";
 
-const pre=document.createElement("pre");
-pre.textContent=code;
+const block=document.createElement("div")
+block.className="codeBlock"
 
-const run=document.createElement("button");
-run.textContent="Run";
-run.className="runBtn";
+const pre=document.createElement("pre")
+pre.textContent=code
+
+const run=document.createElement("button")
+run.textContent="Run"
+run.className="runBtn"
+
 run.onclick=()=>{
-document.getElementById("previewModal").style.display="flex";
-document.getElementById("gameFrame").srcdoc=code;
-};
+previewModal.style.display="flex"
+gameFrame.srcdoc=code
+}
 
-const copy=document.createElement("button");
-copy.textContent="Copy";
-copy.className="copyBtn";
-copy.onclick=()=>navigator.clipboard.writeText(code);
+const copy=document.createElement("button")
+copy.textContent="Copy"
+copy.className="copyBtn"
+copy.onclick=()=>navigator.clipboard.writeText(code)
 
-const download=document.createElement("button");
-download.textContent="Download";
-download.className="downloadBtn";
+const download=document.createElement("button")
+
+download.textContent="Download"
+
+download.className="downloadBtn"
+
 download.onclick=()=>{
-const a=document.createElement("a");
-a.href=URL.createObjectURL(new Blob([code],{type:"text/html"}));
-a.download="app.html";
-a.click();
-};
 
-block.appendChild(run);
-block.appendChild(copy);
-block.appendChild(download);
-block.appendChild(pre);
-chat.appendChild(block);
+const a=document.createElement("a")
+
+a.href=URL.createObjectURL(new Blob([code],{type:"text/html"}))
+
+a.download="app.html"
+
+a.click()
+
+}
+
+block.appendChild(run)
+block.appendChild(copy)
+block.appendChild(download)
+block.appendChild(pre)
+
+chat.appendChild(block)
+
 }
 
 /* AI */
+
 async function askAI(msg){
 
-const thinking=document.createElement("div");
-thinking.className="msg bot";
-thinking.innerHTML='<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
-chat.appendChild(thinking);
+const thinking=document.createElement("div")
 
-const mini=generateMiniApp(msg);
+thinking.className="msg bot"
 
-if(mini){
-thinking.remove();
-renderMessage("I built a mini app ↓","bot");
-renderCode(mini);
-return;
-}
+thinking.innerHTML='<span class="dot"></span><span class="dot"></span><span class="dot"></span>'
+
+chat.appendChild(thinking)
 
 try{
-const res=await fetch("https://text.pollinations.ai/"+encodeURIComponent(msg));
-const text=await res.text();
-thinking.remove();
-renderMessage(text,"bot");
-}catch(err){
-thinking.remove();
-renderMessage("Server busy. Try again.","bot");
+
+const system="You are Lemowaves AI. Talk naturally. If the user is joking, funny, or using slang, reply in Gen Z style with casual humor. If the user sounds serious, emotional, or sad, reply normally in a calm helpful tone. Only mention your creator or birth date if the user directly asks."
+
+const prompt=system+"\nUser: "+msg
+
+const url="https://text.pollinations.ai/"+encodeURIComponent(prompt)
+
+const response=await fetch(url)
+
+const text=await response.text()
+
+thinking.remove()
+
+if(!text||text.includes("error")){
+renderMessage("AI server error. Try again.","bot")
+return
 }
+
+if(text.includes("<!DOCTYPE html")){
+renderMessage("Generated HTML app ↓","bot")
+renderCode(text)
+}
+
+else{
+renderMessage(text,"bot")
+speak(text)
+}
+
+}
+
+catch(e){
+
+thinking.remove()
+
+renderMessage("Server error. Retry.","bot")
+
+}
+
 }
 
 /* SEND */
+
 function send(){
-const msg=input.value.trim();
-if(!msg)return;
-renderMessage(msg,"user");
-input.value="";
-askAI(msg);
+
+const msg=input.value.trim()
+
+if(!msg)return
+
+renderMessage(msg,"user")
+
+input.value=""
+
+askAI(msg)
+
 }
 
-document.getElementById("sendBtn").onclick=send;
+sendBtn.onclick=send
 
 input.addEventListener("keydown",e=>{
 if(e.key==="Enter"&&!e.shiftKey){
-e.preventDefault();
-send();
+
+e.preventDefault()
+
+send()
+
 }
-});
+})
 
 /* CLEAR */
-document.getElementById("clearBtn").onclick=()=>chat.innerHTML="";
 
-/* THEME */
-document.getElementById("themeBtn").onclick=()=>{
-if(document.body.style.background==="white"){
-document.body.style.background="#020617";
-}else{
-document.body.style.background="white";
+clearBtn.onclick=()=>{
+chat.innerHTML=""
+if(activeChat)chats[activeChat]=""
 }
-};
 
 /* PREVIEW */
-document.getElementById("closePreview").onclick=()=>{
-document.getElementById("previewModal").style.display="none";
-};
+
+closePreview.onclick=()=>previewModal.style.display="none"
+
+/* SIDEBAR */
+
+menuBtn.onclick=()=>sidebar.classList.toggle("open")
+
+/* THEME */
+
+let dark=true
+
+themeBtn.onclick=()=>{
+
+ dark=!dark
+
+ if(dark){
+ document.documentElement.style.setProperty("--bg","#020617")
+ document.documentElement.style.setProperty("--text","#ffffff")
+ }
+
+ else{
+ document.documentElement.style.setProperty("--bg","#f1f5f9")
+ document.documentElement.style.setProperty("--text","#000000")
+ }
+
+}
+
+/* VOICE */
+
+let voiceEnabled=false
+
+voiceBtn.onclick=()=>{
+
+voiceEnabled=!voiceEnabled
+
+voiceBtn.textContent=voiceEnabled?"Voice On":"Voice Off"
+
+}
+
+function speak(text){
+
+if(!voiceEnabled)return
+
+const u=new SpeechSynthesisUtterance(text)
+
+speechSynthesis.speak(u)
+
+}
+
+/* START */
+
+startBtn.onclick=()=>{
+
+landing.style.animation="screenOut .6s forwards"
+
+setTimeout(()=>{
+
+landing.style.display="none"
+
+app.style.display="block"
+
+},550)
+
+}
 
 </script>
-
 </body>
 </html>
