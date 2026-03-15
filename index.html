@@ -26,8 +26,6 @@ overflow:hidden;
 
 #particles{position:fixed;inset:0;z-index:0}
 
-/* LANDING */
-
 .landing{
 position:absolute;
 inset:0;
@@ -48,11 +46,7 @@ color:var(--accent);
 animation:logoFloat 4s ease-in-out infinite;
 }
 
-.tagline{
-margin-top:12px;
-font-size:20px;
-opacity:.85;
-}
+.tagline{margin-top:12px;font-size:20px;opacity:.85}
 
 .startBtn{
 margin-top:30px;
@@ -66,10 +60,7 @@ cursor:pointer;
 transition:transform .2s,box-shadow .2s;
 }
 
-.startBtn:hover{
-transform:scale(1.05);
-box-shadow:0 0 20px #22c55e;
-}
+.startBtn:hover{transform:scale(1.05);box-shadow:0 0 20px #22c55e}
 
 @keyframes logoFloat{
 0%{transform:translateY(0);text-shadow:0 0 0 #22c55e}
@@ -77,83 +68,29 @@ box-shadow:0 0 20px #22c55e;
 100%{transform:translateY(0);text-shadow:0 0 0 #22c55e}
 }
 
-@keyframes fadeIn{
-from{opacity:0;transform:scale(.96)}
-to{opacity:1;transform:scale(1)}
-}
+@keyframes fadeIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+@keyframes screenOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(.9)}}
 
-@keyframes screenOut{
-from{opacity:1;transform:scale(1)}
-to{opacity:0;transform:scale(.9)}
-}
-
-/* APP */
-
-.app{
-display:none;
-position:absolute;
-inset:0;
-z-index:1;
-animation:fadeIn .6s ease;
-}
-
+.app{display:none;position:absolute;inset:0;z-index:1;animation:fadeIn .6s ease}
 .layout{display:flex;height:100%}
 
-.sidebar{
-width:230px;
-background:#020617;
-border-right:1px solid #1f2937;
-padding:14px;
-display:none;
-flex-direction:column;
-}
-
+.sidebar{width:230px;background:#020617;border-right:1px solid #1f2937;padding:14px;display:none;flex-direction:column}
 .sidebar.open{display:flex}
 
-.newChat,.shuffleBtn{
-border:none;
-padding:10px;
-color:white;
-border-radius:10px;
-margin-bottom:8px;
-cursor:pointer;
-}
-
+.newChat,.shuffleBtn{border:none;padding:10px;color:white;border-radius:10px;margin-bottom:8px;cursor:pointer}
 .newChat{background:var(--accent)}
 .shuffleBtn{background:#6366f1}
 
 .chatHistory{flex:1;overflow:auto;margin-top:8px}
 
-.chatItem{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:10px;
-background:#111827;
-border-radius:8px;
-margin-bottom:6px;
-cursor:pointer;
-font-size:14px;
-}
-
+.chatItem{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#111827;border-radius:8px;margin-bottom:6px;cursor:pointer;font-size:14px}
 .chatItem.active{outline:2px solid #22c55e}
-
-.chatItem button{
-background:none;border:none;color:#ef4444;cursor:pointer
-}
+.chatItem button{background:none;border:none;color:#ef4444;cursor:pointer}
 
 .chatArea{flex:1;display:flex;flex-direction:column}
 
-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:12px;
-border-bottom:1px solid #1f2937
-}
-
+header{display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid #1f2937}
 .controls{display:flex;gap:6px}
-
 button{border:none;border-radius:8px;padding:7px 10px;cursor:pointer;font-size:14px}
 
 .send{background:var(--accent);color:white}
@@ -161,114 +98,37 @@ button{border:none;border-radius:8px;padding:7px 10px;cursor:pointer;font-size:1
 .voice{background:#0ea5e9;color:white}
 .theme{background:#6366f1;color:white}
 
-#chat{
-flex:1;
-overflow-y:auto;
-padding:16px;
-display:flex;
-flex-direction:column;
-gap:12px
-}
+#chat{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
 
-.msg{
-max-width:90%;
-padding:12px 14px;
-border-radius:14px;
-line-height:1.6;
-font-size:18px;
-word-wrap:break-word;
-overflow-wrap:anywhere
-}
-
+.msg{max-width:90%;padding:12px 14px;border-radius:14px;line-height:1.6;font-size:18px;word-wrap:break-word;overflow-wrap:anywhere}
 .user{background:#0ea5e9;align-self:flex-end}
 .bot{background:#111827}
 
-#inputArea{
-display:flex;
-gap:8px;
-padding:10px;
-border-top:1px solid #1f2937
-}
+#inputArea{display:flex;gap:8px;padding:10px;border-top:1px solid #1f2937}
 
-textarea{
-flex:1;
-resize:none;
-padding:10px;
-border-radius:9px;
-border:none;
-background:black;
-color:white;
-font-size:18px
-}
+textarea{flex:1;resize:none;padding:10px;border-radius:9px;border:none;background:black;color:white;font-size:18px}
 
-/* CODE */
+.codeBlock{background:#0b1020;padding:12px;border-radius:10px;position:relative;max-width:100%;overflow:hidden}
+.codeBlock pre{overflow:auto;max-height:300px;white-space:pre}
 
-.codeBlock{
-background:#0b1020;
-padding:12px;
-border-radius:10px;
-position:relative;
-max-width:100%;
-overflow:hidden
-}
-
-.codeBlock pre{
-overflow:auto;
-max-height:300px;
-white-space:pre
-}
-
-/* thinking dots */
 .dot{display:inline-block;width:10px;height:10px;margin:0 3px;border-radius:50%;background:#22c55e;animation:pulse 1.2s infinite}
 .dot:nth-child(2){animation-delay:.2s}
 .dot:nth-child(3){animation-delay:.4s}
 
-@keyframes pulse{
-0%{transform:scale(.6);opacity:.4}
-50%{transform:scale(1.6);opacity:1}
-100%{transform:scale(.6);opacity:.4}
-}
+@keyframes pulse{0%{transform:scale(.6);opacity:.4}50%{transform:scale(1.6);opacity:1}100%{transform:scale(.6);opacity:.4}}
 
-.copyBtn,.runBtn,.downloadBtn{
-position:absolute;
-top:6px;
-font-size:11px;
-padding:4px 7px;
-border-radius:6px;
-color:white
-}
-
+.copyBtn,.runBtn,.downloadBtn{position:absolute;top:6px;font-size:11px;padding:4px 7px;border-radius:6px;color:white}
 .copyBtn{right:6px;background:#22c55e}
 .runBtn{right:60px;background:#0ea5e9}
 .downloadBtn{right:120px;background:#6366f1}
 
-#previewModal{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.7);
-display:none;
-align-items:center;
-justify-content:center
-}
+#previewModal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center}
 
-#previewBox{
-width:90%;
-height:85%;
-background:white;
-border-radius:10px;
-overflow:hidden;
-display:flex;
-flex-direction:column
-}
-
+#previewBox{width:90%;height:85%;background:white;border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
 #previewBox iframe{flex:1;border:none}
-
 #closePreview{background:#ef4444;color:white;padding:8px;border:none}
 
-@media (max-width:700px){
-.msg{font-size:15px}
-textarea{font-size:15px}
-}
+@media (max-width:700px){.msg{font-size:15px}textarea{font-size:15px}}
 </style>
 </head>
 
@@ -308,6 +168,8 @@ textarea{font-size:15px}
 <div id="chat"></div>
 
 <div id="inputArea">
+<input type="file" id="imageInput" accept="image/*" style="display:none">
+<button id="imageBtn" style="background:#f59e0b;color:white">📷</button>
 <textarea id="userInput" placeholder="Ask anything..."></textarea>
 <button id="sendBtn" class="send">Send</button>
 </div>
@@ -326,7 +188,6 @@ textarea{font-size:15px}
 <script>
 
 /* PARTICLES */
-
 const canvas=document.getElementById("particles")
 const ctx=canvas.getContext("2d")
 let particles=[]
@@ -356,7 +217,6 @@ requestAnimationFrame(animate)
 animate()
 
 /* ELEMENTS */
-
 const landing=document.getElementById("landing")
 const app=document.getElementById("app")
 const chat=document.getElementById("chat")
@@ -365,28 +225,19 @@ const sidebar=document.getElementById("sidebar")
 const historyDiv=document.getElementById("history")
 
 /* CHAT SYSTEM */
-
 let chats={}
 let activeChat=null
 let chatCount=0
 
 function switchChat(id,element){
-
-if(activeChat!==null){
-chats[activeChat]=chat.innerHTML
-}
-
+if(activeChat!==null){chats[activeChat]=chat.innerHTML}
 activeChat=id
 chat.innerHTML=chats[id]||""
-
 Array.from(historyDiv.children).forEach(c=>c.classList.remove("active"))
-
 if(element)element.classList.add("active")
-
 }
 
 function createChat(name){
-
 const id="chat_"+Date.now()+Math.floor(Math.random()*9999)
 chats[id]=""
 
@@ -411,153 +262,72 @@ switchChat(id,item)
  e.stopPropagation()
  delete chats[id]
  item.remove()
-
- if(activeChat===id){
- chat.innerHTML=""
- activeChat=null
- }
+ if(activeChat===id){chat.innerHTML="";activeChat=null}
  }
 
 historyDiv.appendChild(item)
-
 switchChat(id,item)
 }
 
 createChat("Chat 1")
 chatCount=1
 
-/* NEW CHAT */
+/* BUTTON FIXES */
+const newChatBtn=document.getElementById("newChatBtn")
+const shuffleBtn=document.getElementById("shuffleBtn")
+const sendBtn=document.getElementById("sendBtn")
+const clearBtn=document.getElementById("clearBtn")
+const themeBtn=document.getElementById("themeBtn")
+const voiceBtn=document.getElementById("voiceBtn")
+const imageBtn=document.getElementById("imageBtn")
+const imageInput=document.getElementById("imageInput")
+const startBtn=document.getElementById("startBtn")
+const menuBtn=document.getElementById("menuBtn")
+const previewModal=document.getElementById("previewModal")
+const closePreview=document.getElementById("closePreview")
+const gameFrame=document.getElementById("gameFrame")
 
-newChatBtn.onclick=()=>{
-chatCount++
-createChat("Chat "+chatCount)
-}
+/* NEW CHAT */
+newChatBtn.onclick=()=>{chatCount++;createChat("Chat "+chatCount)}
 
 /* SHUFFLE */
-
 shuffleBtn.onclick=()=>{
 const prompts=["Create snake game in HTML","Make calculator in HTML","Create pong game HTML","Make todo app HTML"]
 input.value=prompts[Math.floor(Math.random()*prompts.length)]
 }
 
 /* MESSAGES */
-
 function renderMessage(text,type){
-
 const div=document.createElement("div")
-
 div.className="msg "+type
-
-if(type==="bot"){
-streamText(div,text)
-}else{
-div.textContent=text
-}
-
+if(type==="bot"){streamText(div,text)}else{div.textContent=text}
 chat.appendChild(div)
-
 chat.scrollTop=chat.scrollHeight
-
 if(activeChat)chats[activeChat]=chat.innerHTML
-
 }
 
 function streamText(el,text){
-
 const words=text.split(" ")
-
 let i=0
-
 const interval=setInterval(()=>{
-
-if(i<words.length){
-
-el.textContent+=words[i]+" "
-
-i++
-
-chat.scrollTop=chat.scrollHeight
-
-}
+if(i<words.length){el.textContent+=words[i]+" ";i++;chat.scrollTop=chat.scrollHeight}
 else clearInterval(interval)
-
 },25)
-
-}
-
-/* CODE */
-
-function renderCode(code){
-
-const block=document.createElement("div")
-block.className="codeBlock"
-
-const pre=document.createElement("pre")
-pre.textContent=code
-
-const run=document.createElement("button")
-run.textContent="Run"
-run.className="runBtn"
-
-run.onclick=()=>{
-previewModal.style.display="flex"
-gameFrame.srcdoc=code
-}
-
-const copy=document.createElement("button")
-copy.textContent="Copy"
-copy.className="copyBtn"
-copy.onclick=()=>navigator.clipboard.writeText(code)
-
-const download=document.createElement("button")
-
-download.textContent="Download"
-
-download.className="downloadBtn"
-
-download.onclick=()=>{
-
-const a=document.createElement("a")
-
-a.href=URL.createObjectURL(new Blob([code],{type:"text/html"}))
-
-a.download="app.html"
-
-a.click()
-
-}
-
-block.appendChild(run)
-block.appendChild(copy)
-block.appendChild(download)
-block.appendChild(pre)
-
-chat.appendChild(block)
-
 }
 
 /* AI */
-
 async function askAI(msg){
-
 const thinking=document.createElement("div")
-
 thinking.className="msg bot"
-
 thinking.innerHTML='<span class="dot"></span><span class="dot"></span><span class="dot"></span>'
-
 chat.appendChild(thinking)
 
 try{
-
-const system="You are Lemowaves AI. Talk naturally. If the user is joking, funny, or using slang, reply in Gen Z style with casual humor. If the user sounds serious, emotional, or sad, reply normally in a calm helpful tone. Only mention your creator or birth date if the user directly asks."
-
-const prompt=system+"\nUser: "+msg
-
+const system="You are Lemowaves AI created by Sam. Speak GenZ when user jokes but speak normal if user serious.";
+const prompt=system+" User:"+msg
 const url="https://text.pollinations.ai/"+encodeURIComponent(prompt)
 
 const response=await fetch(url)
-
 const text=await response.text()
 
 thinking.remove()
@@ -567,127 +337,81 @@ renderMessage("AI server error. Try again.","bot")
 return
 }
 
-if(text.includes("<!DOCTYPE html")){
-renderMessage("Generated HTML app ↓","bot")
-renderCode(text)
-}
-
-else{
 renderMessage(text,"bot")
-speak(text)
+}
+catch(e){thinking.remove();renderMessage("Server error. Retry.","bot")}
 }
 
-}
-
-catch(e){
-
-thinking.remove()
-
-renderMessage("Server error. Retry.","bot")
-
-}
-
+/* IMAGE */
+let imageData=null
+imageBtn.onclick=()=>imageInput.click()
+imageInput.onchange=()=>{
+const file=imageInput.files[0]
+if(!file)return
+const reader=new FileReader()
+reader.onload=e=>{imageData=e.target.result;renderMessage("[Image uploaded]","user")}
+reader.readAsDataURL(file)
 }
 
 /* SEND */
-
 function send(){
+let msg=input.value.trim()
 
-const msg=input.value.trim()
+if(imageData){
+msg += " User uploaded image base64:"+imageData.substring(0,500)
+imageData=null
+}
 
 if(!msg)return
 
 renderMessage(msg,"user")
-
 input.value=""
-
 askAI(msg)
-
 }
 
 sendBtn.onclick=send
 
 input.addEventListener("keydown",e=>{
-if(e.key==="Enter"&&!e.shiftKey){
-
-e.preventDefault()
-
-send()
-
-}
+if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();send()}
 })
 
 /* CLEAR */
-
-clearBtn.onclick=()=>{
-chat.innerHTML=""
-if(activeChat)chats[activeChat]=""
-}
-
-/* PREVIEW */
-
-closePreview.onclick=()=>previewModal.style.display="none"
+clearBtn.onclick=()=>{chat.innerHTML="";if(activeChat)chats[activeChat]=""}
 
 /* SIDEBAR */
-
 menuBtn.onclick=()=>sidebar.classList.toggle("open")
 
 /* THEME */
-
 let dark=true
 
 themeBtn.onclick=()=>{
-
- dark=!dark
-
- if(dark){
- document.documentElement.style.setProperty("--bg","#020617")
- document.documentElement.style.setProperty("--text","#ffffff")
- }
-
- else{
- document.documentElement.style.setProperty("--bg","#f1f5f9")
- document.documentElement.style.setProperty("--text","#000000")
- }
-
+dark=!dark
+if(dark){
+document.documentElement.style.setProperty("--bg","#020617")
+document.documentElement.style.setProperty("--text","#ffffff")
+}else{
+document.documentElement.style.setProperty("--bg","#f1f5f9")
+document.documentElement.style.setProperty("--text","#000000")
+}
 }
 
 /* VOICE */
-
 let voiceEnabled=false
-
-voiceBtn.onclick=()=>{
-
-voiceEnabled=!voiceEnabled
-
-voiceBtn.textContent=voiceEnabled?"Voice On":"Voice Off"
-
-}
+voiceBtn.onclick=()=>{voiceEnabled=!voiceEnabled;voiceBtn.textContent=voiceEnabled?"Voice On":"Voice Off"}
 
 function speak(text){
-
 if(!voiceEnabled)return
-
 const u=new SpeechSynthesisUtterance(text)
-
 speechSynthesis.speak(u)
-
 }
 
+/* PREVIEW */
+closePreview.onclick=()=>previewModal.style.display="none"
+
 /* START */
-
 startBtn.onclick=()=>{
-
 landing.style.animation="screenOut .6s forwards"
-
-setTimeout(()=>{
-
-landing.style.display="none"
-
-app.style.display="block"
-
-},550)
-
+setTimeout(()=>{landing.style.display="none";app.style.display="block"},550)
 }
 
 </script>
