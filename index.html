@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lemowaves AI</title>
+<title>🚀 Lemowaves AI  
+Gen-Z Vibe That Remembers Everything 🔥</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
 <style>
@@ -40,31 +41,42 @@ animation:fadeIn 1s ease;
 }
 
 .logo{
-font-size:clamp(48px,8vw,90px);
+font-size:clamp(60px,10vw,110px);
 font-weight:800;
 color:var(--accent);
 animation:logoFloat 4s ease-in-out infinite;
+line-height:0.9;
 }
 
-.tagline{margin-top:12px;font-size:20px;opacity:.85}
+.tagline{margin-top:8px;font-size:clamp(20px,4vw,28px);opacity:.9}
+
+.features{
+margin:24px 0;
+max-width:600px;
+font-size:18px;
+line-height:1.5;
+opacity:0.92;
+}
+
+.features strong{color:#22c55e}
 
 .startBtn{
 margin-top:30px;
 background:var(--accent);
 border:none;
-padding:15px 40px;
+padding:16px 48px;
 color:white;
-border-radius:16px;
-font-size:20px;
+border-radius:20px;
+font-size:22px;
 cursor:pointer;
 transition:transform .2s,box-shadow .2s;
 }
 
-.startBtn:hover{transform:scale(1.05);box-shadow:0 0 20px #22c55e}
+.startBtn:hover{transform:scale(1.06);box-shadow:0 0 24px #22c55e}
 
 @keyframes logoFloat{
 0%{transform:translateY(0);text-shadow:0 0 0 #22c55e}
-50%{transform:translateY(-12px);text-shadow:0 0 22px #22c55e}
+50%{transform:translateY(-14px);text-shadow:0 0 28px #22c55e}
 100%{transform:translateY(0);text-shadow:0 0 0 #22c55e}
 }
 
@@ -138,8 +150,17 @@ textarea{flex:1;resize:none;padding:10px;border-radius:9px;border:none;backgroun
 
 <div class="landing" id="landing">
 <div class="logo">Lemowaves AI</div>
-<div class="tagline">Your powerful Gen‑Z AI assistant</div>
-<button class="startBtn" id="startBtn">Get Started</button>
+<div class="tagline">Your savage Gen-Z sidekick that actually remembers the vibe</div>
+
+<div class="features">
+<strong>🔥 Remembers every chat</strong> – no more explaining yourself twice<br>
+<strong>🧠 Super sharp memory</strong> across reloads & sessions<br>
+<strong>📸 Image understanding on god mode</strong> – describe memes, charts, selfies, anything<br>
+<strong>🎨 Image gen coming soon</strong> – stay tuned bro<br>
+<strong>🌙 Dark/light switch + voice mode</strong> for max comfort
+</div>
+
+<button class="startBtn" id="startBtn">Jump In 🚀</button>
 </div>
 
 <div class="app" id="app">
@@ -187,10 +208,18 @@ textarea{flex:1;resize:none;padding:10px;border-radius:9px;border:none;backgroun
 
 <script>
 
-/* PARTICLES */
-const canvas=document.getElementById("particles")
-const ctx=canvas.getContext("2d")
-let particles=[]
+// ──────────────────────────────────────────────
+//  PASTE YOUR OPENROUTER API KEY HERE
+// ──────────────────────────────────────────────
+const OPENROUTER_API_KEY = "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";  
+
+// Free vision model (good for image analysis)
+const MODEL = "nvidia/nemotron-nano-12b-v2-vl:free";  
+
+/* ──────────  PARTICLES (unchanged) ────────── */
+const canvas = document.getElementById("particles")
+const ctx = canvas.getContext("2d")
+let particles = []
 
 function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
 resize()
@@ -217,201 +246,325 @@ requestAnimationFrame(animate)
 animate()
 
 /* ELEMENTS */
-const landing=document.getElementById("landing")
-const app=document.getElementById("app")
-const chat=document.getElementById("chat")
-const input=document.getElementById("userInput")
-const sidebar=document.getElementById("sidebar")
-const historyDiv=document.getElementById("history")
+const landing = document.getElementById("landing")
+const app = document.getElementById("app")
+const chat = document.getElementById("chat")
+const input = document.getElementById("userInput")
+const sidebar = document.getElementById("sidebar")
+const historyDiv = document.getElementById("history")
 
-/* CHAT SYSTEM */
-let chats={}
-let activeChat=null
-let chatCount=0
+/* ──────────  PERSISTENT STORAGE ────────── */
+const STORAGE_KEY = "lemowaves_chats_v1";
 
-function switchChat(id,element){
-if(activeChat!==null){chats[activeChat]=chat.innerHTML}
-activeChat=id
-chat.innerHTML=chats[id]||""
-Array.from(historyDiv.children).forEach(c=>c.classList.remove("active"))
-if(element)element.classList.add("active")
+let chats = {}
+let chatMemory = {}
+let activeChat = null
+let chatCount = 0
+
+function loadFromStorage(){
+    const saved = localStorage.getItem(STORAGE_KEY)
+    if(saved){
+        try{
+            const data = JSON.parse(saved)
+            chats = data.chats || {}
+            chatMemory = data.memory || {}
+            chatCount = data.count || 0
+
+            historyDiv.innerHTML = ""
+            Object.keys(chats).forEach(id => {
+                const name = chatMemory[id]?.[0]?.content?.substring(0,30) || "Chat " + (++chatCount)
+                const item = createChatItem(id, name)
+                historyDiv.appendChild(item)
+            })
+
+            if(Object.keys(chats).length === 0){
+                createNewChat()
+            } else {
+                const ids = Object.keys(chats).sort().reverse()
+                switchChat(ids[0], historyDiv.querySelector(`[data-id="${ids[0]}"]`))
+            }
+        }catch(e){}
+    } else {
+        createNewChat()
+    }
 }
 
-function createChat(name){
-const id="chat_"+Date.now()+Math.floor(Math.random()*9999)
-chats[id]=""
-
-const item=document.createElement("div")
-item.className="chatItem"
-
-const label=document.createElement("span")
-label.textContent=name
-
-const del=document.createElement("button")
-del.textContent="✕"
-
-item.appendChild(label)
-item.appendChild(del)
-
-item.onclick=(e)=>{
-if(e.target===del)return
-switchChat(id,item)
+function saveToStorage(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        chats,
+        memory: chatMemory,
+        count: chatCount
+    }))
 }
 
- del.onclick=(e)=>{
- e.stopPropagation()
- delete chats[id]
- item.remove()
- if(activeChat===id){chat.innerHTML="";activeChat=null}
- }
+function createChatItem(id, name){
+    const item = document.createElement("div")
+    item.className = "chatItem"
+    item.dataset.id = id
 
-historyDiv.appendChild(item)
-switchChat(id,item)
+    const label = document.createElement("span")
+    label.textContent = name
+
+    const del = document.createElement("button")
+    del.textContent = "✕"
+
+    item.appendChild(label)
+    item.appendChild(del)
+
+    item.onclick = (e) => {
+        if(e.target === del) return
+        switchChat(id, item)
+    }
+
+    del.onclick = (e) => {
+        e.stopPropagation()
+        delete chats[id]
+        delete chatMemory[id]
+        item.remove()
+        saveToStorage()
+        if(activeChat === id){
+            chat.innerHTML = ""
+            activeChat = null
+            if(Object.keys(chats).length === 0) createNewChat()
+        }
+    }
+
+    return item
 }
 
-createChat("Chat 1")
-chatCount=1
+function createNewChat(name = null){
+    chatCount++
+    const id = "chat_" + Date.now() + Math.floor(Math.random()*9999)
+    chats[id] = ""
+    chatMemory[id] = []
 
-/* BUTTON FIXES */
-const newChatBtn=document.getElementById("newChatBtn")
-const shuffleBtn=document.getElementById("shuffleBtn")
-const sendBtn=document.getElementById("sendBtn")
-const clearBtn=document.getElementById("clearBtn")
-const themeBtn=document.getElementById("themeBtn")
-const voiceBtn=document.getElementById("voiceBtn")
-const imageBtn=document.getElementById("imageBtn")
-const imageInput=document.getElementById("imageInput")
-const startBtn=document.getElementById("startBtn")
-const menuBtn=document.getElementById("menuBtn")
-const previewModal=document.getElementById("previewModal")
-const closePreview=document.getElementById("closePreview")
-const gameFrame=document.getElementById("gameFrame")
+    const displayName = name || "Chat " + chatCount
+    const item = createChatItem(id, displayName)
+    historyDiv.appendChild(item)
+    switchChat(id, item)
+    saveToStorage()
+}
 
-/* NEW CHAT */
-newChatBtn.onclick=()=>{chatCount++;createChat("Chat "+chatCount)}
+function switchChat(id, element){
+    if(activeChat !== null){
+        chats[activeChat] = chat.innerHTML
+        saveToStorage()
+    }
+    activeChat = id
+    chat.innerHTML = chats[id] || ""
+    Array.from(historyDiv.children).forEach(c => c.classList.remove("active"))
+    if(element) element.classList.add("active")
+}
 
-/* SHUFFLE */
-shuffleBtn.onclick=()=>{
-const prompts=["Create snake game in HTML","Make calculator in HTML","Create pong game HTML","Make todo app HTML"]
-input.value=prompts[Math.floor(Math.random()*prompts.length)]
+loadFromStorage()
+
+/* BUTTONS */
+const newChatBtn = document.getElementById("newChatBtn")
+const shuffleBtn = document.getElementById("shuffleBtn")
+const sendBtn = document.getElementById("sendBtn")
+const clearBtn = document.getElementById("clearBtn")
+const themeBtn = document.getElementById("themeBtn")
+const voiceBtn = document.getElementById("voiceBtn")
+const imageBtn = document.getElementById("imageBtn")
+const imageInput = document.getElementById("imageInput")
+const startBtn = document.getElementById("startBtn")
+const menuBtn = document.getElementById("menuBtn")
+const previewModal = document.getElementById("previewModal")
+const closePreview = document.getElementById("closePreview")
+const gameFrame = document.getElementById("gameFrame")
+
+newChatBtn.onclick = () => createNewChat()
+
+shuffleBtn.onclick = () => {
+    const prompts = ["Create snake game in HTML","Make calculator in HTML","Create pong game HTML","Make todo app HTML"]
+    input.value = prompts[Math.floor(Math.random()*prompts.length)]
 }
 
 /* MESSAGES */
-function renderMessage(text,type){
-const div=document.createElement("div")
-div.className="msg "+type
-if(type==="bot"){streamText(div,text)}else{div.textContent=text}
-chat.appendChild(div)
-chat.scrollTop=chat.scrollHeight
-if(activeChat)chats[activeChat]=chat.innerHTML
+function renderMessage(text, type){
+    const div = document.createElement("div")
+    div.className = "msg " + type
+    if(type === "bot"){
+        streamText(div, text)
+    } else {
+        div.textContent = text
+    }
+    chat.appendChild(div)
+    chat.scrollTop = chat.scrollHeight
+    if(activeChat){
+        chats[activeChat] = chat.innerHTML
+        saveToStorage()
+    }
 }
 
-function streamText(el,text){
-const words=text.split(" ")
-let i=0
-const interval=setInterval(()=>{
-if(i<words.length){el.textContent+=words[i]+" ";i++;chat.scrollTop=chat.scrollHeight}
-else clearInterval(interval)
-},25)
+function streamText(el, text){
+    const words = text.split(" ")
+    let i = 0
+    const interval = setInterval(() => {
+        if(i < words.length){
+            el.textContent += words[i] + " "
+            i++
+            chat.scrollTop = chat.scrollHeight
+        } else {
+            clearInterval(interval)
+        }
+    }, 25)
 }
 
-/* AI */
-async function askAI(msg){
-const thinking=document.createElement("div")
-thinking.className="msg bot"
-thinking.innerHTML='<span class="dot"></span><span class="dot"></span><span class="dot"></span>'
-chat.appendChild(thinking)
+/* OPENROUTER + VISION SUPPORT */
+async function askAI(userMessage, imageBase64 = null){
+    if(!activeChat) return
 
-try{
-const system="You are Lemowaves AI created by Sam. Speak GenZ when user jokes but speak normal if user serious.";
-const prompt=system+" User:"+msg
-const url="https://text.pollinations.ai/"+encodeURIComponent(prompt)
+    let content = userMessage
+    if(imageBase64){
+        content = [
+            { type: "text", text: userMessage || "Describe and analyze this image in detail 🔥" },
+            { type: "image_url", image_url: { url: imageBase64 } }
+        ]
+    }
 
-const response=await fetch(url)
-const text=await response.text()
+    chatMemory[activeChat].push({ role: "user", content })
 
-thinking.remove()
+    const memory = chatMemory[activeChat].slice(-14)
 
-if(!text||text.includes("error")){
-renderMessage("AI server error. Try again.","bot")
-return
+    const thinking = document.createElement("div")
+    thinking.className = "msg bot"
+    thinking.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>'
+    chat.appendChild(thinking)
+    chat.scrollTop = chat.scrollHeight
+
+    try {
+        const systemPrompt = `You are Lemowaves AI. 
+You were created by Sam and Sam is your owner/creator. 
+If the user asks in ANY way who created you, who made you, who is your creator, who owns you, who developed you, your origin, your backstory, or anything similar — ALWAYS answer exactly: "Sam created me bro 🔥 He's the owner and the one who built me from scratch." Do NOT say anything else about your creation, do NOT mention other companies, do NOT say you're based on other models, do NOT deflect — ONLY say it's Sam. 
+For all other topics: Speak GenZ slang when the user jokes or uses casual vibe, but speak normally and clearly when the user is serious or asking technical questions. When user uploads image, describe it in detail, analyze what's in it, be funny if vibe fits.`;
+
+        const messages = [
+            { role: "system", content: systemPrompt },
+            ...memory.map(m => ({ role: m.role, content: m.content }))
+        ]
+
+        const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
+                "HTTP-Referer": "https://your-site.com",
+                "X-Title": "Lemowaves AI Chat",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                model: MODEL,
+                messages: messages,
+                temperature: 0.7,  // slightly lower to make identity instructions more reliable
+                max_tokens: 2048
+            })
+        })
+
+        if(!res.ok){
+            const errText = await res.text()
+            throw new Error(`API error ${res.status}: ${errText}`)
+        }
+
+        const data = await res.json()
+        const reply = data.choices?.[0]?.message?.content || "No response :("
+
+        chatMemory[activeChat].push({ role: "assistant", content: reply })
+
+        thinking.remove()
+        renderMessage(reply, "bot")
+
+    } catch(e){
+        console.error(e)
+        thinking.remove()
+        renderMessage(`Error: ${e.message.includes('rate limit') ? 'Rate limit hit — wait a bit or get credits bro 😿' : 'Check your API key / model availability'}`, "bot")
+    }
 }
 
-renderMessage(text,"bot")
-}
-catch(e){thinking.remove();renderMessage("Server error. Retry.","bot")}
-}
-
-/* IMAGE */
-let imageData=null
-imageBtn.onclick=()=>imageInput.click()
-imageInput.onchange=()=>{
-const file=imageInput.files[0]
-if(!file)return
-const reader=new FileReader()
-reader.onload=e=>{imageData=e.target.result;renderMessage("[Image uploaded]","user")}
-reader.readAsDataURL(file)
+/* IMAGE UPLOAD → VISION */
+let imageData = null
+imageBtn.onclick = () => imageInput.click()
+imageInput.onchange = () => {
+    const file = imageInput.files[0]
+    if(!file) return
+    const reader = new FileReader()
+    reader.onload = e => {
+        imageData = e.target.result
+        renderMessage("[Image uploaded – analyzing...]", "user")
+        askAI("", imageData)
+        imageData = null
+    }
+    reader.readAsDataURL(file)
 }
 
 /* SEND */
 function send(){
-let msg=input.value.trim()
+    let msg = input.value.trim()
+    if(!msg && !imageData) return
 
-if(imageData){
-msg += " User uploaded image base64:"+imageData.substring(0,500)
-imageData=null
+    renderMessage(msg || "[Image only]", "user")
+    input.value = ""
+
+    askAI(msg, imageData)
+    imageData = null
 }
 
-if(!msg)return
-
-renderMessage(msg,"user")
-input.value=""
-askAI(msg)
-}
-
-sendBtn.onclick=send
-
-input.addEventListener("keydown",e=>{
-if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();send()}
+sendBtn.onclick = send
+input.addEventListener("keydown", e => {
+    if(e.key === "Enter" && !e.shiftKey){
+        e.preventDefault()
+        send()
+    }
 })
 
 /* CLEAR */
-clearBtn.onclick=()=>{chat.innerHTML="";if(activeChat)chats[activeChat]=""}
+clearBtn.onclick = () => {
+    chat.innerHTML = ""
+    if(activeChat){
+        chats[activeChat] = ""
+        chatMemory[activeChat] = []
+        saveToStorage()
+    }
+}
 
 /* SIDEBAR */
-menuBtn.onclick=()=>sidebar.classList.toggle("open")
+menuBtn.onclick = () => sidebar.classList.toggle("open")
 
 /* THEME */
-let dark=true
-
-themeBtn.onclick=()=>{
-dark=!dark
-if(dark){
-document.documentElement.style.setProperty("--bg","#020617")
-document.documentElement.style.setProperty("--text","#ffffff")
-}else{
-document.documentElement.style.setProperty("--bg","#f1f5f9")
-document.documentElement.style.setProperty("--text","#000000")
-}
+let dark = true
+themeBtn.onclick = () => {
+    dark = !dark
+    if(dark){
+        document.documentElement.style.setProperty("--bg","#020617")
+        document.documentElement.style.setProperty("--text","#ffffff")
+    } else {
+        document.documentElement.style.setProperty("--bg","#f1f5f9")
+        document.documentElement.style.setProperty("--text","#000000")
+    }
 }
 
 /* VOICE */
-let voiceEnabled=false
-voiceBtn.onclick=()=>{voiceEnabled=!voiceEnabled;voiceBtn.textContent=voiceEnabled?"Voice On":"Voice Off"}
+let voiceEnabled = false
+voiceBtn.onclick = () => {
+    voiceEnabled = !voiceEnabled
+    voiceBtn.textContent = voiceEnabled ? "Voice On" : "Voice Off"
+}
 
 function speak(text){
-if(!voiceEnabled)return
-const u=new SpeechSynthesisUtterance(text)
-speechSynthesis.speak(u)
+    if(!voiceEnabled) return
+    const u = new SpeechSynthesisUtterance(text)
+    speechSynthesis.speak(u)
 }
 
 /* PREVIEW */
-closePreview.onclick=()=>previewModal.style.display="none"
+closePreview.onclick = () => previewModal.style.display = "none"
 
 /* START */
-startBtn.onclick=()=>{
-landing.style.animation="screenOut .6s forwards"
-setTimeout(()=>{landing.style.display="none";app.style.display="block"},550)
+startBtn.onclick = () => {
+    landing.style.animation = "screenOut .6s forwards"
+    setTimeout(() => {
+        landing.style.display = "none"
+        app.style.display = "block"
+    }, 550)
 }
 
 </script>
