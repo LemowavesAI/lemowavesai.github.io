@@ -2187,7 +2187,7 @@ function askAI(userText){
     }
     var promptFull=buildImgPrompt(rawSubj);
     var isPrem=window.user&&window.user.isPremium;
-    var STABILITY_KEY='sk-eYEnfYpZ4yLeMkwUgTZOIwU9tg2sD1i2gKZ4WFXpG25vE4ub';
+    var STABILITY_KEY='sk-OqBoWQLLFukBEZtRMP6wMaX8jTCvyyM1ulL0Ip8U9Sd4lORj';
     var enc=encodeURIComponent;
     var pf=enc(promptFull),pr=enc(rawSubj);
     // Pollinations fallback URLs
@@ -2465,9 +2465,9 @@ function callAPI(userText,msgHistory,systemContent,imgData){
      Higher priority reply replaces lower priority reply even if already shown.
      Big code requests require min 200 chars so weak fast models don't steal the win.
   ══════════════════════════════════════════ */
-  var OR_KEY='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';
-  var TOGETHER_KEY='e0c952c3-2585-4674-a59d-042b31b43965';
-  var GROQ_KEY='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';
+  var OR_KEY='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';
+  var TOGETHER_KEY='tgp_v1_qArIqeN3ll4qP_CQPWMIlyC7tXkBaA6uH0-BodI6PE0';
+  var GROQ_KEY='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';
 
   var isSmartPremium=window._smartMode||false;
   var maxTok=isSmartPremium?8000:4000;
